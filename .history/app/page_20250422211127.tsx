@@ -4,14 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 export default function Home() {
-  interface SimulationResult {
-    pid: string;
-    arrival_time: number;
-    burst_time: number;
-    // Add other fields as needed based on the backend response
-  }
-
-  const [result, setResult] = useState<SimulationResult[] | null>(null);
+  const [result, setResult] = useState<null | any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
