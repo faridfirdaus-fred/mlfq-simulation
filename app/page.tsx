@@ -1,97 +1,121 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+import ProcessForm from "../components/ProcessForm";
+import ProcessTable from "../components/ProcessTable";
+import ResultsDisplay from "../components/ResultsDisplay";
+import SimulationControls from "../components/SimulationControls";
+import { Process } from "./api/utils/types";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle, Loader2 } from "lucide-react";
 
 export default function Home() {
-  interface SimulationResult {
-    pid: string;
-    arrival_time: number;
-    burst_time: number;
-    // Add other fields as needed based on the backend response
-  }
-
-  const [result, setResult] = useState<SimulationResult[] | null>(null);
+  const [processes, setProcesses] = useState<Process[]>([]);
+  const [results, setResults] = useState<Process[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isRunning, setIsRunning] = useState(false);
+  const [totalTime, setTotalTime] = useState(0);
 
-  const testBackendConnection = async () => {
+  const handleAddProcess = (newProcess: Process) => {
+    setProcesses((prev) => [...prev, newProcess]);
+    toast.success("Process Added", {
+      description: `Process ${newProcess.pid} has been added to the simulation.`,
+    });
+  };
+
+  const handleStart = async () => {
+    if (processes.length === 0) {
+      toast.error("No processes", {
+        description:
+          "Please add at least one process before starting the simulation.",
+      });
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setIsRunning(true);
+
     try {
-      setLoading(true);
-      setError(null);
-
-      console.log("API URL:", process.env.NEXT_PUBLIC_API_URL);
-
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/simulate`, {
+      const response = await fetch("/api/mlfq", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify([{ pid: "P1", arrival_time: 0, burst_time: 5 }]),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(processes),
       });
 
-      if (!res.ok) {
-        throw new Error(`Error: ${res.status} ${res.statusText}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Server error");
       }
 
-      const data = await res.json();
-      console.log("Response from backend:", data);
-      setResult(data);
+      const data = await response.json();
+      setResults(data.processes);
+      setTotalTime(data.total_time);
+
+      toast.success("Simulation Complete", {
+        description: `Completed in ${data.total_time} time units.`,
+      });
     } catch (err) {
-      console.error("Connection error:", err);
-      setError(
-        err instanceof Error ? err.message : "An unknown error occurred"
-      );
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to run simulation";
+      setError(errorMessage);
+      toast.error("Simulation failed", {
+        description: errorMessage,
+      });
     } finally {
       setLoading(false);
+      setIsRunning(false);
     }
   };
 
+  const handleStop = () => {
+    setIsRunning(false);
+    toast.info("Simulation Stopped", {
+      description: "The simulation has been stopped.",
+    });
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <div className="container mx-auto py-8 px-4 max-w-6xl">
+      <h1 className="text-4xl font-bold mb-8 text-center">
+        Multi-Level Feedback Queue Scheduler
+      </h1>
+
+      <div className="grid gap-8">
+        <ProcessForm onSubmit={handleAddProcess} />
+
+        <SimulationControls
+          onStart={handleStart}
+          onStop={handleStop}
+          isRunning={isRunning}
         />
 
-        {/* Backend connection test */}
-        <div className="w-full max-w-md p-4 bg-white shadow-md rounded-lg dark:bg-gray-800">
-          <h2 className="text-xl font-bold mb-4">Backend Connection Test</h2>
-          <button
-            onClick={testBackendConnection}
-            disabled={loading}
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full mb-4"
-          >
-            {loading ? "Testing..." : "Test Backend Connection"}
-          </button>
+        {loading && (
+          <div className="flex justify-center items-center p-8">
+            <Loader2 className="h-8 w-8 animate-spin mr-2" />
+            <p className="text-lg">Running simulation...</p>
+          </div>
+        )}
 
-          {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 dark:bg-red-900 dark:text-red-100">
-              {error}
-            </div>
-          )}
+        {error && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
 
-          {result && (
-            <div className="mt-4">
-              <h3 className="font-bold text-lg mb-2">Response:</h3>
-              <pre className="bg-gray-100 p-2 rounded overflow-x-auto dark:bg-gray-700 text-xs">
-                {JSON.stringify(result, null, 2)}
-              </pre>
-            </div>
-          )}
-        </div>
+        <ProcessTable processes={processes} />
 
-        {/* Rest of your existing content */}
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          {/* existing content */}
-        </ol>
+        {results && <ResultsDisplay results={results} totalTime={totalTime} />}
+      </div>
 
-        {/* existing content */}
-      </main>
-      {/* existing footer */}
+      <Toaster richColors position="top-center" />
     </div>
   );
 }
