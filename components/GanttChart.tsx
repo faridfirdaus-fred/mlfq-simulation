@@ -10,8 +10,8 @@ import {
 
 interface GanttEntry {
   pid: string;
-  start: number; // simulation time unit
-  end: number;   // simulation time unit
+  start: number;
+  end: number;
 }
 
 interface GanttChartProps {
@@ -19,7 +19,6 @@ interface GanttChartProps {
 }
 
 const GanttChart: React.FC<GanttChartProps> = ({ log }) => {
-  // Prepare data for Google Timeline
   const data = React.useMemo(() => {
     const header = [
       { type: 'string', id: 'Task ID' },
@@ -59,12 +58,10 @@ const GanttChart: React.FC<GanttChartProps> = ({ log }) => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {/* Column labels */}
         <div className="grid grid-cols-2 gap-4 mb-4 text-sm font-medium">
           <div>PID</div>
           <div>Time</div>
         </div>
-        {/* Timeline chart */}
         <div className="w-full" style={{ height: '300px' }}>
           <Chart
             chartType="Timeline"
