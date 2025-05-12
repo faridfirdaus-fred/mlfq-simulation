@@ -1,6 +1,12 @@
 import React from "react";
 import { Chart } from "react-google-charts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 
 interface GanttEntry {
   pid: string;
@@ -22,8 +28,8 @@ const GanttChart: React.FC<GanttChartProps> = ({ log }) => {
       { type: 'datetime', id: 'End' },
     ];
 
+    const base = new Date(0);
     const rows = log.map(({ pid, start, end }) => {
-      const base = new Date(0);
       const startDate = new Date(base.getTime() + start * 1000);
       const endDate = new Date(base.getTime() + end * 1000);
       return [pid, pid, startDate, endDate];
@@ -47,9 +53,18 @@ const GanttChart: React.FC<GanttChartProps> = ({ log }) => {
   return (
     <Card className="mt-6">
       <CardHeader>
-        <CardTitle>Gantt Chart</CardTitle>
+        <CardTitle>MLFQ Gantt Chart</CardTitle>
+        <CardDescription>
+          This chart visualizes each process (PID) execution window over the simulated time units.
+        </CardDescription>
       </CardHeader>
       <CardContent>
+        {/* Column labels */}
+        <div className="grid grid-cols-2 gap-4 mb-4 text-sm font-medium">
+          <div>PID</div>
+          <div>Time</div>
+        </div>
+        {/* Timeline chart */}
         <div className="w-full" style={{ height: '300px' }}>
           <Chart
             chartType="Timeline"
