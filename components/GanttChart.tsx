@@ -1,10 +1,11 @@
 import React from "react";
 import { Chart } from "react-google-charts";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface GanttEntry {
   pid: string;
-  start: number;
-  end: number;
+  start: number; // simulation time unit
+  end: number;   // simulation time unit
 }
 
 interface GanttChartProps {
@@ -12,6 +13,7 @@ interface GanttChartProps {
 }
 
 const GanttChart: React.FC<GanttChartProps> = ({ log }) => {
+  // Prepare data for Google Timeline
   const data = React.useMemo(() => {
     const header = [
       { type: 'string', id: 'Task ID' },
@@ -38,19 +40,27 @@ const GanttChart: React.FC<GanttChartProps> = ({ log }) => {
     avoidOverlappingGridLines: false,
     hAxis: {
       title: 'Time (simulation units)',
+      gridlines: { count: Math.min(log.length * 2, 10) },
     },
   };
 
   return (
-    <div style={{ height: '300px' }}>
-      <Chart
-        chartType="Timeline"
-        data={data}
-        options={options}
-        width="100%"
-        height="100%"
-      />
-    </div>
+    <Card className="mt-6">
+      <CardHeader>
+        <CardTitle>Gantt Chart</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="w-full" style={{ height: '300px' }}>
+          <Chart
+            chartType="Timeline"
+            data={data}
+            options={options}
+            width="100%"
+            height="100%"
+          />
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
