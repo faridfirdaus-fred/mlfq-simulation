@@ -19,6 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StatisticsAnalysis from "./StatisticsAnalysis";
 
+import GanttChart from "./GanttChart";
 interface ResultsDisplayProps {
   results: Process[] | null;
   totalTime: number;
@@ -142,6 +143,16 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
       <div className="mt-8">
         <h2 className="text-2xl font-bold mb-4">Advanced Statistics & Analysis</h2>
         <StatisticsAnalysis processes={results} totalTime={totalTime} />
+      </div>
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">Gantt Chart</h2>
+        <GanttChart
+          log={results.map((proc) => ({
+            pid: proc.pid,
+            start: proc.start ?? 0,
+            end: proc.finish ?? proc.start ?? 0,
+          }))}
+        />
       </div>
     </>
   );
