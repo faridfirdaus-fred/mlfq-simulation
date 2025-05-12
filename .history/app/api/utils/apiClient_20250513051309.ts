@@ -1,10 +1,10 @@
 import { API_URL } from "@/lib/constants";
 import { Process, SimulationResult, ErrorResponse } from "../utils/types";
 
-export const apiClient = async <T, B = Record<string, unknown> | Process[]>(
+export const apiClient = async <T>(
   endpoint: string,
   method: string = "GET",
-  body?: B
+  body?: unknown
 ): Promise<T> => {
   try {
     const response = await fetch(`${API_URL}/${endpoint}`, {
