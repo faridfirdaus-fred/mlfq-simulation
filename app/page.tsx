@@ -214,51 +214,82 @@ export default function Home() {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-6xl">
-      <h1 className="text-4xl font-bold mb-8 text-center">
-        Multi-Level Feedback Queue Scheduler
-      </h1>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-950">
+      <div className="container mx-auto py-8 px-4 max-w-6xl">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+            Multi-Level Feedback Queue
+          </h1>
+          <h2 className="text-2xl font-semibold text-gray-600 dark:text-gray-300 mb-2">
+            Simulation & Visualization
+          </h2>
+          <p className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+            Experience real-time MLFQ scheduling with interactive process management, 
+            detailed analytics, and beautiful visualizations
+          </p>
+        </div>
 
-      <div className="grid gap-8">
-        <ProcessForm onSubmit={handleAddProcess} />
+        <div className="grid gap-8">
+          <ProcessForm onSubmit={handleAddProcess} />
 
-        <SimulationControls
-          onStart={handleStart}
-          onStop={handleStop}
-          isRunning={isRunning}
-        />
-
-        {loading && (
-          <div className="flex justify-center items-center p-8">
-            <Loader2 className="h-8 w-8 animate-spin mr-2" />
-            <p className="text-lg">Running simulation...</p>
-          </div>
-        )}
-
-        {error && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-
-        {/* Process Monitor with visualization states */}
-        {isRunning && simulationStates.length > 0 && (
-          <ProcessMonitor
-            processes={simulationStates}
-            currentTime={currentTime}
-            totalTime={totalTime}
+          <SimulationControls
+            onStart={handleStart}
+            onStop={handleStop}
             isRunning={isRunning}
           />
-        )}
 
-        <ProcessTable processes={processes} />
+          {loading && (
+            <div className="flex justify-center items-center p-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-blue-200 dark:border-blue-800">
+              <div className="text-center">
+                <Loader2 className="h-12 w-12 animate-spin mb-4 text-blue-600 mx-auto" />
+                <p className="text-lg font-medium text-blue-700 dark:text-blue-300">
+                  Running simulation...
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                  Processing your tasks through MLFQ scheduler
+                </p>
+              </div>
+            </div>
+          )}
 
-        {results && <ResultsDisplay results={results} totalTime={totalTime} />}
+          {error && (
+            <Alert variant="destructive" className="bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800">
+              <AlertCircle className="h-5 w-5" />
+              <AlertTitle className="text-red-800 dark:text-red-200">
+                Simulation Error
+              </AlertTitle>
+              <AlertDescription className="text-red-700 dark:text-red-300">
+                {error}
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {/* Process Monitor with visualization states */}
+          {isRunning && simulationStates.length > 0 && (
+            <ProcessMonitor
+              processes={simulationStates}
+              currentTime={currentTime}
+              totalTime={totalTime}
+              isRunning={isRunning}
+            />
+          )}
+
+          <ProcessTable processes={processes} />
+
+          {results && <ResultsDisplay results={results} totalTime={totalTime} />}
+        </div>
+
+        {/* Footer */}
+        <div className="mt-16 text-center">
+          <p className="text-gray-500 dark:text-gray-400 text-sm">
+            Built with Next.js, React, and Tailwind CSS • 
+            <span className="text-blue-600 dark:text-blue-400 ml-1">MLFQ Scheduler Visualization</span>
+          </p>
+        </div>
+
+        <Toaster richColors position="top-center" />
       </div>
-
-      <Toaster richColors position="top-center" />
     </div>
   );
 }

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+import { Plus, Cpu, Timer, HardDrive, Zap } from "lucide-react";
 
 const formSchema = z.object({
   pid: z.string().min(1, { message: "Process ID is required" }),
@@ -36,11 +37,11 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
   const form = useForm<Process>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      pid: "", // Use empty strings instead of undefined
+      pid: "",
       arrival_time: 0,
       burst_time: 1,
       io_burst: 0,
-      total_time: 0, // Initialize with 0 instead of undefined
+      total_time: 0,
       io_variance: 0,
       cpu_variance: 0,
     },
@@ -59,11 +60,15 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Define Tasks</CardTitle>
+    <Card className="relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-950/20 dark:via-transparent dark:to-purple-950/20"></div>
+      <CardHeader className="relative">
+        <CardTitle className="flex items-center gap-2 text-2xl text-blue-700 dark:text-blue-300">
+          <Plus className="h-6 w-6" />
+          Define Process
+        </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="relative">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
@@ -75,9 +80,16 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
                 name="pid"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Process ID</FormLabel>
+                    <FormLabel className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
+                      <Zap className="h-4 w-4" />
+                      Process ID
+                    </FormLabel>
                     <FormControl>
-                      <Input placeholder="P1" {...field} />
+                      <Input 
+                        placeholder="P1" 
+                        {...field} 
+                        className="border-purple-200 focus:border-purple-400 dark:border-purple-700"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -89,9 +101,16 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
                 name="arrival_time"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Arrival Time</FormLabel>
+                    <FormLabel className="flex items-center gap-2 text-green-700 dark:text-green-300">
+                      <Timer className="h-4 w-4" />
+                      Arrival Time
+                    </FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input 
+                        type="number" 
+                        {...field} 
+                        className="border-green-200 focus:border-green-400 dark:border-green-700"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -103,9 +122,16 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
                 name="burst_time"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>CPU Burst</FormLabel>
+                    <FormLabel className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+                      <Cpu className="h-4 w-4" />
+                      CPU Burst
+                    </FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input 
+                        type="number" 
+                        {...field} 
+                        className="border-blue-200 focus:border-blue-400 dark:border-blue-700"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -117,9 +143,16 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
                 name="io_burst"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>IO Burst</FormLabel>
+                    <FormLabel className="flex items-center gap-2 text-orange-700 dark:text-orange-300">
+                      <HardDrive className="h-4 w-4" />
+                      IO Burst
+                    </FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input 
+                        type="number" 
+                        {...field} 
+                        className="border-orange-200 focus:border-orange-400 dark:border-orange-700"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -131,9 +164,16 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
                 name="total_time"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Total Time (Optional)</FormLabel>
+                    <FormLabel className="flex items-center gap-2 text-indigo-700 dark:text-indigo-300">
+                      <Timer className="h-4 w-4" />
+                      Total Time (Optional)
+                    </FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input 
+                        type="number" 
+                        {...field} 
+                        className="border-indigo-200 focus:border-indigo-400 dark:border-indigo-700"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -141,22 +181,28 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
               />
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
               <FormField
                 control={form.control}
                 name="cpu_variance"
                 render={({ field: { value, onChange, ...field } }) => (
                   <FormItem>
-                    <FormLabel>CPU Variance: {value}</FormLabel>
+                    <FormLabel className="text-blue-700 dark:text-blue-300 text-lg font-semibold">
+                      CPU Variance: <span className="font-mono text-lg bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">{value}</span>
+                    </FormLabel>
                     <FormControl>
-                      <Slider
-                        min={0}
-                        max={1}
-                        step={0.1}
-                        value={[value]}
-                        onValueChange={(vals) => onChange(vals[0])}
-                        {...field}
-                      />
+                      <div className="py-4 px-2">
+                        <Slider
+                          min={0}
+                          max={1}
+                          step={0.1}
+                          value={[value]}
+                          onValueChange={(vals) => onChange(vals[0])}
+                          className="w-full"
+                          colorScheme="blue"
+                          {...field}
+                        />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -168,16 +214,22 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
                 name="io_variance"
                 render={({ field: { value, onChange, ...field } }) => (
                   <FormItem>
-                    <FormLabel>IO Variance: {value}</FormLabel>
+                    <FormLabel className="text-orange-700 dark:text-orange-300 text-lg font-semibold">
+                      IO Variance: <span className="font-mono text-lg bg-orange-100 dark:bg-orange-900 px-2 py-1 rounded">{value}</span>
+                    </FormLabel>
                     <FormControl>
-                      <Slider
-                        min={0}
-                        max={1}
-                        step={0.1}
-                        value={[value]}
-                        onValueChange={(vals) => onChange(vals[0])}
-                        {...field}
-                      />
+                      <div className="py-4 px-2">
+                        <Slider
+                          min={0}
+                          max={1}
+                          step={0.1}
+                          value={[value]}
+                          onValueChange={(vals) => onChange(vals[0])}
+                          className="w-full"
+                          colorScheme="orange"
+                          {...field}
+                        />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -185,7 +237,13 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
               />
             </div>
 
-            <Button type="submit">Add Process</Button>
+            <Button 
+              type="submit" 
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+            >
+              <Plus className="h-5 w-5 mr-2" />
+              Add Process
+            </Button>
           </form>
         </Form>
       </CardContent>
