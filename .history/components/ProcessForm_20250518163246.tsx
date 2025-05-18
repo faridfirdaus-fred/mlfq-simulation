@@ -62,21 +62,19 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <Card className="border-gray-100 dark:border-gray-700">
-      <CardHeader className="border-b border-gray-100 dark:border-gray-700">
+    <Card>
+      <CardHeader>
         <motion.div
           className="flex items-center gap-2"
-          initial={{ x: -10, opacity: 0 }}
+          initial={{ x: -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <Cpu className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-          <CardTitle className="text-gray-700 dark:text-gray-300">
-            Define Process
-          </CardTitle>
+          <Cpu className="h-5 w-5 text-blue-500" />
+          <CardTitle>Define Process</CardTitle>
         </motion.div>
       </CardHeader>
-      <CardContent className="pt-4">
+      <CardContent>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
@@ -84,7 +82,7 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <motion.div
-                initial={{ opacity: 0, y: 5 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
               >
@@ -93,18 +91,12 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
                   name="pid"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700 dark:text-gray-300">
-                        Process ID
-                      </FormLabel>
-                      <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
+                      <FormLabel>Process ID</FormLabel>
+                      <FormDescription className="text-xs text-gray-500">
                         A unique identifier for the process (e.g., P1, P2, etc.)
                       </FormDescription>
                       <FormControl>
-                        <Input
-                          placeholder="P1"
-                          {...field}
-                          className="border-gray-200 dark:border-gray-600"
-                        />
+                        <Input placeholder="P1" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -113,27 +105,21 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 5 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 }}
+                transition={{ delay: 0.2 }}
               >
                 <FormField
                   control={form.control}
                   name="arrival_time"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700 dark:text-gray-300">
-                        Arrival Time
-                      </FormLabel>
-                      <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
+                      <FormLabel>Arrival Time</FormLabel>
+                      <FormDescription className="text-xs text-gray-500">
                         When the process enters the ready queue (time units)
                       </FormDescription>
                       <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          className="border-gray-200 dark:border-gray-600"
-                        />
+                        <Input type="number" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -142,27 +128,21 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 5 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0.3 }}
               >
                 <FormField
                   control={form.control}
                   name="burst_time"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700 dark:text-gray-300">
-                        CPU Burst
-                      </FormLabel>
-                      <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
+                      <FormLabel>CPU Burst</FormLabel>
+                      <FormDescription className="text-xs text-gray-500">
                         Time required for CPU execution (time units)
                       </FormDescription>
                       <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          className="border-gray-200 dark:border-gray-600"
-                        />
+                        <Input type="number" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -171,27 +151,21 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 5 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25 }}
+                transition={{ delay: 0.4 }}
               >
                 <FormField
                   control={form.control}
                   name="io_burst"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700 dark:text-gray-300">
-                        IO Burst
-                      </FormLabel>
-                      <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
+                      <FormLabel>IO Burst</FormLabel>
+                      <FormDescription className="text-xs text-gray-500">
                         Time spent in I/O operations (time units)
                       </FormDescription>
                       <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          className="border-gray-200 dark:border-gray-600"
-                        />
+                        <Input type="number" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -200,27 +174,21 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 5 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.5 }}
               >
                 <FormField
                   control={form.control}
                   name="total_time"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700 dark:text-gray-300">
-                        Total Time (Optional)
-                      </FormLabel>
-                      <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
+                      <FormLabel>Total Time (Optional)</FormLabel>
+                      <FormDescription className="text-xs text-gray-500">
                         Total execution time if known (time units)
                       </FormDescription>
                       <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          className="border-gray-200 dark:border-gray-600"
-                        />
+                        <Input type="number" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -231,19 +199,17 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
 
             <div className="space-y-4">
               <motion.div
-                initial={{ opacity: 0, y: 5 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35 }}
+                transition={{ delay: 0.6 }}
               >
                 <FormField
                   control={form.control}
                   name="cpu_variance"
                   render={({ field: { value, onChange, ...field } }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700 dark:text-gray-300">
-                        CPU Variance: {value}
-                      </FormLabel>
-                      <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
+                      <FormLabel>CPU Variance: {value}</FormLabel>
+                      <FormDescription className="text-xs text-gray-500">
                         Variability in CPU execution times (0-1, 0=constant,
                         1=highly variable)
                       </FormDescription>
@@ -255,7 +221,6 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
                           value={[value]}
                           onValueChange={(vals) => onChange(vals[0])}
                           {...field}
-                          className="[&_[role=slider]]:bg-gray-500 [&_[role=slider]]:border-gray-300 [&_[role=slider]]:dark:bg-gray-400"
                         />
                       </FormControl>
                       <FormMessage />
@@ -265,19 +230,17 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 5 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
+                transition={{ delay: 0.7 }}
               >
                 <FormField
                   control={form.control}
                   name="io_variance"
                   render={({ field: { value, onChange, ...field } }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700 dark:text-gray-300">
-                        IO Variance: {value}
-                      </FormLabel>
-                      <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
+                      <FormLabel>IO Variance: {value}</FormLabel>
+                      <FormDescription className="text-xs text-gray-500">
                         Variability in I/O operation times (0-1, 0=constant,
                         1=highly variable)
                       </FormDescription>
@@ -289,7 +252,6 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
                           value={[value]}
                           onValueChange={(vals) => onChange(vals[0])}
                           {...field}
-                          className="[&_[role=slider]]:bg-gray-500 [&_[role=slider]]:border-gray-300 [&_[role=slider]]:dark:bg-gray-400"
                         />
                       </FormControl>
                       <FormMessage />
@@ -300,15 +262,15 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
             </div>
 
             <motion.div
-              initial={{ opacity: 0, y: 5 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45 }}
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
+              transition={{ delay: 0.8 }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
             >
               <Button
                 type="submit"
-                className="w-full bg-gray-700 hover:bg-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500 text-white"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
               >
                 Add Process
               </Button>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import ProcessForm from "../components/ProcessForm";
 import ProcessTable from "../components/ProcessTable";
 import ResultsDisplay from "../components/ResultsDisplay";
@@ -11,7 +10,7 @@ import { Process } from "./api/utils/types";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle, Loader2, Cpu } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 
 export default function Home() {
   const [processes, setProcesses] = useState<Process[]>([]);
@@ -25,23 +24,6 @@ export default function Home() {
   const [simulationTimer, setSimulationTimer] = useState<NodeJS.Timeout | null>(
     null
   );
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 10, opacity: 0 },
-    visible: { y: 0, opacity: 1 },
-  };
 
   // Generate intermediate states for visualization
   const generateIntermediateStates = (
@@ -233,171 +215,50 @@ export default function Home() {
 
   return (
     <div className="container mx-auto py-8 max-w-7xl">
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="mb-12"
-      >
-        <motion.div
-          className="flex justify-center items-center gap-3"
-          initial={{ scale: 0.95 }}
-          animate={{ scale: 1 }}
-          transition={{
-            type: "spring",
-            stiffness: 100,
-            damping: 15,
-          }}
-        >
-          <Cpu className="h-8 w-8 text-gray-600 dark:text-gray-300" />
-          <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100">
-            Multi-Level Feedback Queue Scheduler
-          </h1>
-        </motion.div>
+      <h1 className="text-4xl font-bold mb-8 text-center">
+        Multi-Level Feedback Queue Scheduler
+      </h1>
 
-        <motion.p
-          className="text-center text-gray-600 dark:text-gray-400 mt-2 max-w-2xl mx-auto"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          An interactive visualization of the MLFQ CPU scheduling algorithm for
-          process management
-        </motion.p>
-      </motion.div>
+      <div className="grid gap-8">
+        <ProcessForm onSubmit={handleAddProcess} />
 
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="grid gap-6"
-      >
-        <motion.div
-          variants={itemVariants}
-          whileHover={{ scale: 1.005 }}
-          transition={{ type: "tween" }}
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden"
-        >
-          <div className="bg-gray-100 dark:bg-gray-700 p-1" />
-          <div className="p-6">
-            <ProcessForm onSubmit={handleAddProcess} />
+        <SimulationControls
+          onStart={handleStart}
+          onStop={handleStop}
+          isRunning={isRunning}
+        />
+
+        {loading && (
+          <div className="flex justify-center items-center p-8">
+            <Loader2 className="h-8 w-8 animate-spin mr-2" />
+            <p className="text-lg">Running simulation...</p>
           </div>
-        </motion.div>
-
-        <motion.div
-          variants={itemVariants}
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden"
-        >
-          <div className="bg-gray-100 dark:bg-gray-700 p-1" />
-          <div className="p-6">
-            <SimulationControls
-              onStart={handleStart}
-              onStop={handleStop}
-              isRunning={isRunning}
-            />
-          </div>
-        </motion.div>
-
-        <AnimatePresence>
-          {loading && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-8 flex justify-center items-center"
-            >
-              <motion.div
-                animate={{
-                  rotate: 360,
-                }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 2,
-                  ease: "linear",
-                }}
-              >
-                <Loader2 className="h-10 w-10 text-gray-500 dark:text-gray-400 mr-4" />
-              </motion.div>
-              <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
-                Running simulation...
-              </p>
-            </motion.div>
-          )}
-
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, x: 10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -10 }}
-            >
-              <Alert
-                variant="destructive"
-                className="border-l-2 border-red-400 dark:border-red-500 bg-white dark:bg-gray-800"
-              >
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Process Monitor with visualization states */}
-        <AnimatePresence>
-          {isRunning && simulationStates.length > 0 && (
-            <motion.div
-              key="process-monitor"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ type: "spring", damping: 20 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden"
-            >
-              <div className="bg-gray-100 dark:bg-gray-700 p-1" />
-              <div className="p-4">
-                <ProcessMonitor
-                  processes={simulationStates}
-                  currentTime={currentTime}
-                  totalTime={totalTime}
-                  isRunning={isRunning}
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {processes.length > 0 && (
-          <motion.div
-            variants={itemVariants}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden"
-          >
-            <div className="bg-gray-100 dark:bg-gray-700 p-1" />
-            <div className="p-6">
-              <ProcessTable processes={processes} />
-            </div>
-          </motion.div>
         )}
 
-        <AnimatePresence>
-          {results && (
-            <motion.div
-              key="results-display"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ type: "spring", damping: 20 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden"
-            >
-              <div className="bg-gray-100 dark:bg-gray-700 p-1" />
-              <div className="p-6">
-                <ResultsDisplay results={results} totalTime={totalTime} />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
+        {error && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
 
-      <Toaster richColors={false} position="top-center" />
+        {/* Process Monitor with visualization states */}
+        {isRunning && simulationStates.length > 0 && (
+          <ProcessMonitor
+            processes={simulationStates}
+            currentTime={currentTime}
+            totalTime={totalTime}
+            isRunning={isRunning}
+          />
+        )}
+
+        <ProcessTable processes={processes} />
+
+        {results && <ResultsDisplay results={results} totalTime={totalTime} />}
+      </div>
+
+      <Toaster richColors position="top-center" />
     </div>
   );
 }

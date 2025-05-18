@@ -32,16 +32,17 @@ export default function Home() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
+        staggerChildren: 0.3,
+        delayChildren: 0.2,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { y: 10, opacity: 0 },
+    hidden: { y: 20, opacity: 0 },
     visible: { y: 0, opacity: 1 },
   };
+
 
   // Generate intermediate states for visualization
   const generateIntermediateStates = (
@@ -234,61 +235,60 @@ export default function Home() {
   return (
     <div className="container mx-auto py-8 max-w-7xl">
       <motion.div
-        initial={{ opacity: 0, y: -10 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.5 }}
         className="mb-12"
       >
-        <motion.div
+        <motion.div 
           className="flex justify-center items-center gap-3"
-          initial={{ scale: 0.95 }}
+          initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
-          transition={{
-            type: "spring",
-            stiffness: 100,
-            damping: 15,
+          transition={{ 
+            type: "spring", 
+            stiffness: 200, 
+            damping: 10 
           }}
         >
-          <Cpu className="h-8 w-8 text-gray-600 dark:text-gray-300" />
-          <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100">
+          <Cpu className="h-8 w-8 text-blue-500" />
+          <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Multi-Level Feedback Queue Scheduler
           </h1>
         </motion.div>
-
-        <motion.p
-          className="text-center text-gray-600 dark:text-gray-400 mt-2 max-w-2xl mx-auto"
+        
+        <motion.p 
+          className="text-center text-gray-600 dark:text-gray-300 mt-2 max-w-2xl mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.3 }}
         >
-          An interactive visualization of the MLFQ CPU scheduling algorithm for
-          process management
+          An interactive visualization of the MLFQ CPU scheduling algorithm for process management
         </motion.p>
       </motion.div>
 
-      <motion.div
+      <motion.div 
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="grid gap-6"
+        className="grid gap-8"
       >
-        <motion.div
+        <motion.div 
           variants={itemVariants}
-          whileHover={{ scale: 1.005 }}
+          whileHover={{ scale: 1.01 }}
           transition={{ type: "tween" }}
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden"
+          className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
         >
-          <div className="bg-gray-100 dark:bg-gray-700 p-1" />
+          <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-1" />
           <div className="p-6">
             <ProcessForm onSubmit={handleAddProcess} />
           </div>
         </motion.div>
 
-        <motion.div
+        <motion.div 
           variants={itemVariants}
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden"
+          className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
         >
-          <div className="bg-gray-100 dark:bg-gray-700 p-1" />
+          <div className="bg-gradient-to-r from-green-500 to-teal-500 p-1" />
           <div className="p-6">
             <SimulationControls
               onStart={handleStart}
@@ -300,11 +300,11 @@ export default function Home() {
 
         <AnimatePresence>
           {loading && (
-            <motion.div
+            <motion.div 
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-8 flex justify-center items-center"
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 flex justify-center items-center"
             >
               <motion.div
                 animate={{
@@ -316,24 +316,19 @@ export default function Home() {
                   ease: "linear",
                 }}
               >
-                <Loader2 className="h-10 w-10 text-gray-500 dark:text-gray-400 mr-4" />
+                <Loader2 className="h-12 w-12 text-blue-500 mr-4" />
               </motion.div>
-              <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
-                Running simulation...
-              </p>
+              <p className="text-lg font-medium">Running simulation...</p>
             </motion.div>
           )}
 
           {error && (
             <motion.div
-              initial={{ opacity: 0, x: 10 }}
+              initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -10 }}
+              exit={{ opacity: 0, x: -20 }}
             >
-              <Alert
-                variant="destructive"
-                className="border-l-2 border-red-400 dark:border-red-500 bg-white dark:bg-gray-800"
-              >
+              <Alert variant="destructive" className="border-l-4 border-red-500">
                 <AlertCircle className="h-4 w-4" />
                 <AlertTitle>Error</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
@@ -347,13 +342,17 @@ export default function Home() {
           {isRunning && simulationStates.length > 0 && (
             <motion.div
               key="process-monitor"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ type: "spring", damping: 20 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0, scale: [1, 1.02, 1] }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ 
+                type: "spring", 
+                damping: 15,
+                scale: { repeat: Infinity, duration: 2 }
+              }}
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
             >
-              <div className="bg-gray-100 dark:bg-gray-700 p-1" />
+              <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-1" />
               <div className="p-4">
                 <ProcessMonitor
                   processes={simulationStates}
@@ -367,11 +366,11 @@ export default function Home() {
         </AnimatePresence>
 
         {processes.length > 0 && (
-          <motion.div
+          <motion.div 
             variants={itemVariants}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden"
+            className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
           >
-            <div className="bg-gray-100 dark:bg-gray-700 p-1" />
+            <div className="bg-gradient-to-r from-cyan-500 to-blue-500 p-1" />
             <div className="p-6">
               <ProcessTable processes={processes} />
             </div>
@@ -382,13 +381,13 @@ export default function Home() {
           {results && (
             <motion.div
               key="results-display"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              transition={{ type: "spring", damping: 20 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden"
+              transition={{ type: "spring", damping: 15 }}
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
             >
-              <div className="bg-gray-100 dark:bg-gray-700 p-1" />
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-1" />
               <div className="p-6">
                 <ResultsDisplay results={results} totalTime={totalTime} />
               </div>
@@ -397,7 +396,7 @@ export default function Home() {
         </AnimatePresence>
       </motion.div>
 
-      <Toaster richColors={false} position="top-center" />
+      <Toaster richColors position="top-center" />
     </div>
   );
 }
