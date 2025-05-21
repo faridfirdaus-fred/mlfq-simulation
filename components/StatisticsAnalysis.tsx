@@ -52,14 +52,85 @@ const StatisticsAnalysis: React.FC<StatisticsAnalysisProps> = ({
       processes.filter((p) => p.state === "finished").length / totalTime;
 
     // Average response time (time from arrival to first CPU burst)
-    const avgResponseTime =
-      processes.reduce((acc, proc) => {
-        const responseTime =
-          proc.start_time != null && proc.arrival_time !== undefined
-            ? proc.start_time - proc.arrival_time
-            : 0;
-        return acc + responseTime;
-      }, 0) / processes.length;
+    const avgResponseTime = useMemo(() => {
+      // Karena first_execution_time tidak akurat, kita perlu menghitung manual
+      // berdasarkan data start_time dari proses
+
+      // Log untuk debugging
+      console.log("Calculating response times for processes:", processes);
+
+      // Implementasi manual berdasarkan arrival time dan start time
+      let totalResponseTime = 0;
+      const processesWithTimes: {
+        pid: string;
+        arrival: number;
+        first_exec: null;
+        start: number | null | undefined;
+        responseTime: number;
+      }[] = [];
+
+      processes.forEach((proc) => {
+        let responseTime = 0;
+
+        // Selalu gunakan execution_log jika tersedia karena paling akurat
+        if (
+          proc.execution_log &&
+          Array.isArray(proc.execution_log) &&
+          proc.execution_log.length > 0
+        ) {
+          // Sortir execution_log berdasarkan waktu mulai untuk memastikan kita mengambil eksekusi pertama
+          const sortedLog = [...proc.execution_log].sort(
+            (a, b) => a.start_time - b.start_time
+          );
+          responseTime = sortedLog[0].start_time - (proc.arrival_time || 0);
+
+          // Log untuk debugging
+          console.log(
+            `Process ${proc.pid}: Using execution_log - First execution at ${sortedLog[0].start_time}, arrival at ${proc.arrival_time}`
+          );
+        } else if (proc.first_execution_time != null) {
+          responseTime = proc.first_execution_time - (proc.arrival_time || 0);
+          console.log(
+            `Process ${proc.pid}: Using first_execution_time - ${proc.first_execution_time}, arrival at ${proc.arrival_time}`
+          );
+        } else if (proc.start_time != null) {
+          responseTime = proc.start_time - (proc.arrival_time || 0);
+          console.log(
+            `Process ${proc.pid}: Using start_time - ${proc.start_time}, arrival at ${proc.arrival_time}`
+          );
+        } else {
+          console.warn(
+            `Process ${proc.pid}: No execution timing information available!`
+          );
+        }
+
+        // Pastikan responseTime tidak negatif
+        responseTime = Math.max(0, responseTime);
+
+        // Tambahkan debugging tambahan untuk membantu troubleshooting
+        console.log(`Process ${proc.pid} final response time: ${responseTime}`);
+
+        processesWithTimes.push({
+          pid: proc.pid,
+          arrival: proc.arrival_time,
+          first_exec: proc.first_execution_time,
+          start: proc.start_time,
+          responseTime,
+        });
+
+        totalResponseTime += responseTime;
+      });
+
+      // Log hasil perhitungan untuk debugging
+      console.log("Process response times:", processesWithTimes);
+      console.log("Total response time:", totalResponseTime);
+      console.log(
+        "Average response time:",
+        totalResponseTime / processes.length
+      );
+
+      return totalResponseTime / processes.length;
+    }, [processes]);
 
     return {
       cpuUtilization,
