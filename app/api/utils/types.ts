@@ -1,4 +1,6 @@
 export interface Process {
+  execution_log: boolean;
+  first_execution_time: null;
   pid: string;
   arrival_time: number;
   burst_time: number;
