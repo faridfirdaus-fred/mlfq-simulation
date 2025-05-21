@@ -55,8 +55,8 @@ const StatisticsAnalysis: React.FC<StatisticsAnalysisProps> = ({
     const avgResponseTime =
       processes.reduce((acc, proc) => {
         const responseTime =
-          proc.start != null && proc.arrival_time !== undefined
-            ? proc.start - proc.arrival_time
+          proc.start_time != null && proc.arrival_time !== undefined
+            ? proc.start_time - proc.arrival_time
             : 0;
         return acc + responseTime;
       }, 0) / processes.length;
@@ -244,7 +244,7 @@ const StatisticsAnalysis: React.FC<StatisticsAnalysisProps> = ({
               <tbody>
                 {processes.map((proc) => {
                   const totalProcessTime =
-                    (proc.finish || 0) - (proc.arrival_time || 0);
+                    (proc.finish_time || 0) - (proc.arrival_time || 0);
                   const cpuEfficiency =
                     ((proc.burst_time || 0) / totalProcessTime) * 100;
                   const ioEfficiency =

@@ -75,15 +75,21 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
                 <TableBody>
                   {results.map((result) => (
                     <TableRow key={result.pid}>
-                      <TableCell className="font-medium">{result.pid}</TableCell>
+                      <TableCell className="font-medium">
+                        {result.pid}
+                      </TableCell>
                       <TableCell>
                         {result.queue !== undefined ? result.queue : "-"}
                       </TableCell>
                       <TableCell>
-                        {result.start !== undefined ? result.start : "-"}
+                        {result.start_time !== undefined
+                          ? result.start_time
+                          : "-"}
                       </TableCell>
                       <TableCell>
-                        {result.finish !== undefined ? result.finish : "-"}
+                        {result.finish_time !== undefined
+                          ? result.finish_time
+                          : "-"}
                       </TableCell>
                       <TableCell>
                         {result.turnaround_time !== undefined
@@ -124,7 +130,9 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-muted p-4 rounded-lg">
                   <h3 className="text-lg font-medium">Avg Turnaround Time</h3>
-                  <p className="text-3xl font-bold">{avgTurnaround.toFixed(2)}</p>
+                  <p className="text-3xl font-bold">
+                    {avgTurnaround.toFixed(2)}
+                  </p>
                 </div>
                 <div className="bg-muted p-4 rounded-lg">
                   <h3 className="text-lg font-medium">Avg Waiting Time</h3>
@@ -141,7 +149,9 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
       </Card>
 
       <div className="mt-8">
-        <h2 className="text-2xl font-bold mb-4">Advanced Statistics & Analysis</h2>
+        <h2 className="text-2xl font-bold mb-4">
+          Advanced Statistics & Analysis
+        </h2>
         <StatisticsAnalysis processes={results} totalTime={totalTime} />
       </div>
       <div className="mt-8">
@@ -149,8 +159,8 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
         <GanttChart
           log={results.map((proc) => ({
             pid: proc.pid,
-            start: proc.start ?? 0,
-            end: proc.finish ?? proc.start ?? 0,
+            start: proc.start_time ?? 0,
+            end: proc.finish_time ?? proc.start_time ?? 0,
           }))}
         />
       </div>

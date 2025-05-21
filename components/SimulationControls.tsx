@@ -1,40 +1,49 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Play, Square } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Play, Trash, Loader2 } from "lucide-react";
 
 interface SimulationControlsProps {
   onStart: () => void;
-  onStop: () => void;
+  onClear: () => void;
   isRunning: boolean;
+  disableStart?: boolean;
+  disableClear?: boolean;
 }
 
 const SimulationControls: React.FC<SimulationControlsProps> = ({
   onStart,
-  onStop,
+  onClear,
   isRunning,
+  disableStart = false,
+  disableClear = false,
 }) => {
   return (
     <Card>
       <CardContent className="flex justify-between items-center p-4">
         <Button
           onClick={onStart}
-          disabled={isRunning}
+          disabled={isRunning || disableStart}
           className="gap-2"
           size="lg"
         >
-          <Play size={18} />
-          Start Simulation
+          {isRunning ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Play size={18} />
+          )}
+          {isRunning ? "Running..." : "Start Simulation"}
         </Button>
+
         <Button
-          onClick={onStop}
-          disabled={!isRunning}
-          variant="destructive"
+          onClick={onClear}
+          disabled={isRunning || disableClear}
+          variant="outline"
           className="gap-2"
           size="lg"
         >
-          <Square size={18} />
-          Stop Simulation
+          <Trash size={18} />
+          Clear All
         </Button>
       </CardContent>
     </Card>

@@ -21,10 +21,10 @@ interface GanttChartProps {
 const GanttChart: React.FC<GanttChartProps> = ({ log }) => {
   const data = React.useMemo(() => {
     const header = [
-      { type: 'string', id: 'Task ID' },
-      { type: 'string', id: 'Task Name' },
-      { type: 'datetime', id: 'Start' },
-      { type: 'datetime', id: 'End' },
+      { type: "string", id: "Task ID" },
+      { type: "string", id: "Task Name" },
+      { type: "datetime", id: "Start" },
+      { type: "datetime", id: "End" },
     ];
 
     const base = new Date(0);
@@ -44,7 +44,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ log }) => {
     },
     avoidOverlappingGridLines: false,
     hAxis: {
-      title: 'Time (simulation units)',
+      title: "Time (simulation units)",
       gridlines: { count: Math.min(log.length * 2, 10) },
     },
   };
@@ -54,7 +54,8 @@ const GanttChart: React.FC<GanttChartProps> = ({ log }) => {
       <CardHeader>
         <CardTitle>MLFQ Gantt Chart</CardTitle>
         <CardDescription>
-          This chart visualizes each process (PID) execution window over the simulated time units.
+          This chart visualizes each process (PID) execution window over the
+          simulated time units.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -62,7 +63,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ log }) => {
           <div>PID</div>
           <div>Time</div>
         </div>
-        <div className="w-full" style={{ height: '300px' }}>
+        <div className="w-full" style={{ height: "300px" }}>
           <Chart
             chartType="Timeline"
             data={data}

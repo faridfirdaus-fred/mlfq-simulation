@@ -36,7 +36,7 @@ const ProcessMonitor: React.FC<ProcessMonitorProps> = ({
 
   // Group processes by their current state and queue
   const runningProcess = processes.find((p) => p.state === "running");
-  const ioProcesses = processes.filter((p) => p.state === "io");
+  const ioProcesses = processes.filter((p) => p.state === "blocked");
   const finishedProcesses = processes.filter((p) => p.state === "finished");
 
   // Group by queue levels
@@ -173,7 +173,7 @@ const ProcessMonitor: React.FC<ProcessMonitorProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                   {ioProcesses.map((proc) => (
                     <div
-                      key={proc.pid}
+                      key={`io-${proc.pid}`}
                       className="flex items-center justify-between bg-gray-50 dark:bg-gray-800 p-2 rounded-md border border-gray-200 dark:border-gray-700"
                     >
                       <div>
@@ -181,7 +181,7 @@ const ProcessMonitor: React.FC<ProcessMonitorProps> = ({
                           {proc.pid}
                         </div>
                         <div className="text-xs text-gray-500 dark:text-gray-400">
-                          I/O time left: {proc.remaining_io || "?"}
+                          I/O time left: {proc.remaining_io_time || "?"}
                         </div>
                       </div>
                     </div>
@@ -210,7 +210,7 @@ const ProcessMonitor: React.FC<ProcessMonitorProps> = ({
 
           {queueProcesses.map((queueProcs, index) => (
             <Card
-              key={index}
+              key={`queue-${index}`}
               className={`border-gray-100 dark:border-gray-700 ${
                 index === 0 ? "bg-gray-50 dark:bg-gray-800" : ""
               }`}
@@ -233,7 +233,7 @@ const ProcessMonitor: React.FC<ProcessMonitorProps> = ({
                   <div className="flex flex-wrap gap-2">
                     {queueProcs.map((proc) => (
                       <Badge
-                        key={proc.pid}
+                        key={`queue-${index}-${proc.pid}`}
                         variant="outline"
                         className="py-1 px-3 bg-gray-100 border-gray-200 text-gray-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
                       >

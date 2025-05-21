@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Process } from "../app/api/utils/types";
+import { SimulationConfig } from "../app/api/utils/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -18,60 +18,63 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
-import { Cpu } from "lucide-react";
+import { Settings, Check } from "lucide-react";
+import { toast } from "sonner";
 
-// Update the form schema to match backend expectations
 interface FormSchemaType {
-  pid: string;
-  arrival_time: number;
-  burst_time: number;
-  priority: number;
-  io_time: number;
+  num_queues: number;
+  time_slice: number;
+  boost_interval: number;
+  aging_threshold: number;
 }
 
 const formSchema = z.object({
-  pid: z.string().min(1, { message: "Process ID is required" }),
-  arrival_time: z.coerce.number().min(0),
-  burst_time: z.coerce.number().min(1),
-  priority: z.coerce.number().min(0),
-  io_time: z.coerce.number().min(0),
+  num_queues: z.coerce.number().min(1).max(10),
+  time_slice: z.coerce.number().min(1),
+  boost_interval: z.coerce.number().min(1),
+  aging_threshold: z.coerce.number().min(1),
 });
 
-interface ProcessFormProps {
-  onSubmit: (process: Process) => void;
+interface ConfigFormProps {
+  onSubmit: (config: SimulationConfig) => void;
+  defaultValues?: Partial<FormSchemaType>;
 }
 
-const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
+const ConfigForm: React.FC<ConfigFormProps> = ({
+  onSubmit,
+  defaultValues = {
+    num_queues: 3,
+    time_slice: 2,
+    boost_interval: 100,
+    aging_threshold: 5,
+  },
+}) => {
+  const [submitted, setSubmitted] = useState(false);
+
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      pid: "",
-      arrival_time: 0,
-      burst_time: 1,
-      priority: 0,
-      io_time: 0,
-    },
+    defaultValues,
   });
 
   const handleSubmit = (values: FormSchemaType) => {
-    // Convert the form values to match the Process interface
-    const processData: Process = {
-      pid: values.pid,
-      arrival_time: values.arrival_time,
-      burst_time: values.burst_time,
-      priority: values.priority,
-      io_time: values.io_time,
+    const configData: SimulationConfig = {
+      num_queues: values.num_queues,
+      time_slice: values.time_slice,
+      boost_interval: values.boost_interval,
+      aging_threshold: values.aging_threshold,
     };
 
-    onSubmit(processData);
+    // Call the parent component's onSubmit
+    onSubmit(configData);
 
-    form.reset({
-      pid: "",
-      arrival_time: 0,
-      burst_time: 1,
-      priority: 0,
-      io_time: 0,
+    // Show success feedback
+    setSubmitted(true);
+    toast.success("Configuration Applied", {
+      description: "Simulation parameters have been updated",
     });
+
+    // Reset the feedback after a short delay
+    setTimeout(() => setSubmitted(false), 2000);
   };
 
   return (
@@ -83,9 +86,9 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <Cpu className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+          <Settings className="h-5 w-5 text-gray-500 dark:text-gray-400" />
           <CardTitle className="text-gray-700 dark:text-gray-300">
-            Define Process
+            Simulation Configuration
           </CardTitle>
         </motion.div>
       </CardHeader>
@@ -103,18 +106,18 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
               >
                 <FormField
                   control={form.control}
-                  name="pid"
+                  name="num_queues"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-700 dark:text-gray-300">
-                        Process ID
+                        Number of Queues
                       </FormLabel>
                       <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
-                        A unique identifier for the process (e.g., P1, P2, etc.)
+                        Number of priority levels in MLFQ (1-10)
                       </FormDescription>
                       <FormControl>
                         <Input
-                          placeholder="P1"
+                          type="number"
                           {...field}
                           className="border-gray-200 dark:border-gray-600"
                         />
@@ -132,14 +135,14 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
               >
                 <FormField
                   control={form.control}
-                  name="arrival_time"
+                  name="time_slice"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-700 dark:text-gray-300">
-                        Arrival Time
+                        Time Slice
                       </FormLabel>
                       <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
-                        When the process enters the ready queue (time units)
+                        Base time quantum for highest priority queue
                       </FormDescription>
                       <FormControl>
                         <Input
@@ -161,14 +164,14 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
               >
                 <FormField
                   control={form.control}
-                  name="burst_time"
+                  name="boost_interval"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-700 dark:text-gray-300">
-                        CPU Burst Time
+                        Boost Interval
                       </FormLabel>
                       <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
-                        Time required for CPU execution (time units)
+                        Time interval for priority boost (time units)
                       </FormDescription>
                       <FormControl>
                         <Input
@@ -190,44 +193,14 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
               >
                 <FormField
                   control={form.control}
-                  name="io_time"
+                  name="aging_threshold"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-700 dark:text-gray-300">
-                        I/O Time
+                        Aging Threshold
                       </FormLabel>
                       <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
-                        Time spent in I/O operations (time units)
-                      </FormDescription>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          className="border-gray-200 dark:border-gray-600"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <FormField
-                  control={form.control}
-                  name="priority"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-700 dark:text-gray-300">
-                        Priority
-                      </FormLabel>
-                      <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
-                        Initial process priority (lower number = higher
-                        priority)
+                        Time before process aging occurs (time units)
                       </FormDescription>
                       <FormControl>
                         <Input
@@ -252,9 +225,20 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
             >
               <Button
                 type="submit"
-                className="w-full bg-gray-700 hover:bg-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500 text-white"
+                className={`w-full flex gap-2 items-center justify-center ${
+                  submitted
+                    ? "bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600"
+                    : "bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
+                } text-white`}
               >
-                Add Process
+                {submitted ? (
+                  <>
+                    <Check className="h-4 w-4" />
+                    Configuration Applied
+                  </>
+                ) : (
+                  "Apply Configuration"
+                )}
               </Button>
             </motion.div>
           </form>
@@ -264,4 +248,4 @@ const ProcessForm: React.FC<ProcessFormProps> = ({ onSubmit }) => {
   );
 };
 
-export default ProcessForm;
+export default ConfigForm;

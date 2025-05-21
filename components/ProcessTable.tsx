@@ -9,16 +9,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Process } from "../app/api/utils/types";
-import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
-import { ListFilter } from "lucide-react";
+import { ListFilter, Trash2 } from "lucide-react";
 
 interface ProcessTableProps {
   processes: Process[];
+  onRemove?: (pid: string) => void;
 }
 
-const ProcessTable: React.FC<ProcessTableProps> = ({ processes }) => {
+const ProcessTable: React.FC<ProcessTableProps> = ({ processes, onRemove }) => {
   if (!processes.length) return null;
 
   return (
@@ -58,17 +59,16 @@ const ProcessTable: React.FC<ProcessTableProps> = ({ processes }) => {
                   CPU Burst
                 </TableHead>
                 <TableHead className="text-gray-700 dark:text-gray-300">
-                  IO Burst
+                  I/O Time
                 </TableHead>
                 <TableHead className="text-gray-700 dark:text-gray-300">
-                  CPU Variance
+                  Priority
                 </TableHead>
-                <TableHead className="text-gray-700 dark:text-gray-300">
-                  IO Variance
-                </TableHead>
-                <TableHead className="text-gray-700 dark:text-gray-300">
-                  Status
-                </TableHead>
+                {onRemove && (
+                  <TableHead className="text-gray-700 dark:text-gray-300">
+                    Actions
+                  </TableHead>
+                )}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -90,34 +90,24 @@ const ProcessTable: React.FC<ProcessTableProps> = ({ processes }) => {
                     {process.burst_time}
                   </TableCell>
                   <TableCell className="text-gray-600 dark:text-gray-400">
-                    {process.io_burst}
+                    {process.io_time}
                   </TableCell>
                   <TableCell className="text-gray-600 dark:text-gray-400">
-                    {(process.cpu_variance * 100).toFixed(0)}%
+                    {process.priority}
                   </TableCell>
-                  <TableCell className="text-gray-600 dark:text-gray-400">
-                    {(process.io_variance * 100).toFixed(0)}%
-                  </TableCell>
-                  <TableCell>
-                    {process.state ? (
-                      <Badge
-                        variant="outline"
-                        className={
-                          process.state === "finished"
-                            ? "border-gray-300 text-gray-700 dark:border-gray-600 dark:text-gray-300"
-                            : process.state === "running"
-                            ? "border-gray-300 bg-gray-100 text-gray-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300"
-                            : "border-gray-200 bg-gray-50 text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-                        }
+                  {onRemove && (
+                    <TableCell>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => onRemove(process.pid)}
+                        className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                       >
-                        {process.state}
-                      </Badge>
-                    ) : (
-                      <span className="text-gray-500 dark:text-gray-400">
-                        Waiting
-                      </span>
-                    )}
-                  </TableCell>
+                        <Trash2 className="h-4 w-4" />
+                        <span className="sr-only">Remove</span>
+                      </Button>
+                    </TableCell>
+                  )}
                 </motion.tr>
               ))}
             </TableBody>
