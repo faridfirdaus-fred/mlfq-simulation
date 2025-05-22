@@ -181,45 +181,6 @@ const StatisticsAnalysis: React.FC<StatisticsAnalysisProps> = ({
               </p>
             </div>
           </div>
-
-          <div className="mt-6">
-            <h3 className="font-medium mb-2">Time Distribution Chart</h3>
-            <div className="w-full h-8 flex rounded-md overflow-hidden">
-              <div
-                className="bg-primary h-full"
-                style={{
-                  width: `${(metrics.totalCpuTime / totalTime) * 100}%`,
-                }}
-                title={`CPU Time: ${metrics.totalCpuTime} units`}
-              ></div>
-              <div
-                className="bg-secondary h-full"
-                style={{ width: `${(metrics.totalIoTime / totalTime) * 100}%` }}
-                title={`I/O Time: ${metrics.totalIoTime} units`}
-              ></div>
-              <div
-                className="bg-muted h-full"
-                style={{
-                  width: `${(metrics.totalWaitingTime / totalTime) * 100}%`,
-                }}
-                title={`Waiting Time: ${metrics.totalWaitingTime} units`}
-              ></div>
-            </div>
-            <div className="flex justify-between mt-2 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 bg-primary rounded-sm"></div>
-                <span>CPU Time</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 bg-secondary rounded-sm"></div>
-                <span>I/O Time</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 bg-muted rounded-sm"></div>
-                <span>Waiting Time</span>
-              </div>
-            </div>
-          </div>
         </CardContent>
       </Card>
 
