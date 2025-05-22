@@ -108,7 +108,7 @@ const ProcessMonitor: React.FC<ProcessMonitorProps> = ({
 }) => {
   const [replayTime, setReplayTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [playbackSpeed] = useState(750); // ms per step replay
+  const [playbackSpeed, setPlaybackSpeed] = useState(750); // ms per step replay
 
   // Event points adalah titik-titik waktu penting (arrival, start_run, end_run, finish)
   const eventPoints = useMemo(() => {
@@ -379,6 +379,8 @@ const ProcessMonitor: React.FC<ProcessMonitorProps> = ({
     runningProcess,
     readyQueues,
     ioProcesses,
+    finishedCount,
+    totalProcesses,
     eventLog,
   } = displayData;
 

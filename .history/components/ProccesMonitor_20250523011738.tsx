@@ -379,6 +379,8 @@ const ProcessMonitor: React.FC<ProcessMonitorProps> = ({
     runningProcess,
     readyQueues,
     ioProcesses,
+    finishedCount,
+    totalProcesses,
     eventLog,
   } = displayData;
 
