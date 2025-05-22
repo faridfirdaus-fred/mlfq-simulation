@@ -28,7 +28,7 @@ export default function DocumentationPage() {
   };
 
   const item = {
-    hidden: { opacity: 0, y: 5 }, // Changed from y: 20 to y: 5 for more subtle animation
+    hidden: { opacity: 0, y: 5 },
     show: { opacity: 1, y: 0 },
   };
 
@@ -42,104 +42,65 @@ export default function DocumentationPage() {
       >
         <motion.h1
           variants={item}
-          className="text-4xl font-bold text-center mb-8 text-gray-800 dark:text-gray-100"
+          className="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent"
         >
-          Welcome to MLFQ Simulation
+          Selamat Datang di Simulasi MLFQ
         </motion.h1>
 
         <motion.div variants={item} className="mb-8">
-          {" "}
-          {/* Changed from mb-12 to mb-8 */}
-          <div className="border-l-2 border-gray-200 dark:border-gray-700 pl-4 mb-4">
-            {" "}
-            {/* Changed from border-l-4 border-blue-500 */}
-            <h2 className="flex items-center text-2xl font-semibold mb-4 text-gray-700 dark:text-gray-300">
-              {" "}
-              {/* Changed from text-blue-600 */}
-              <FaBook className="mr-2 text-gray-500 dark:text-gray-400" />{" "}
-              Introduction
+          <div className="border-l-4 border-blue-500 pl-4 mb-4">
+            <h2 className="flex items-center text-2xl font-semibold mb-4 text-blue-600 dark:text-blue-400">
+              <FaBook className="mr-2" />
+              Pengenalan
             </h2>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-            {" "}
-            {/* Changed from bg-gray-50 and added border */}
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg p-6 shadow-sm border border-blue-100 dark:border-blue-700">
             <p className="mb-3 text-gray-600 dark:text-gray-400">
-              Welcome to the MLFQ (Multi-Level Feedback Queue) Simulation
-              documentation. This application provides an interactive
-              visualization of the MLFQ scheduling algorithm, helping you
-              understand how it works in real-time.
+              Selamat datang di dokumentasi Simulasi MLFQ (Multi-Level Feedback Queue). Aplikasi ini menyediakan visualisasi interaktif dari algoritma penjadwalan MLFQ, membantu Anda memahami cara kerjanya secara real-time.
             </p>
-            <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-              {" "}
-              {/* Changed from blue colors */}
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {" "}
-                {/* Changed from blue text colors */}
-                This simulation is designed to be both educational and
-                practical, allowing you to experiment with different scheduling
-                scenarios.
+            <div className="mt-4 p-3 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-800/30 dark:to-purple-800/30 rounded-lg border border-blue-200 dark:border-blue-600">
+              <p className="text-sm font-medium text-blue-700 dark:text-blue-300">
+                Simulasi ini dirancang untuk keperluan edukasi dan praktis, memungkinkan Anda bereksperimen dengan berbagai skenario penjadwalan.
               </p>
             </div>
           </div>
         </motion.div>
 
         <motion.div variants={item} className="mb-8">
-          {" "}
-          {/* Changed from mb-12 to mb-8 */}
-          <div className="border-l-2 border-gray-200 dark:border-gray-700 pl-4 mb-4">
-            {" "}
-            {/* Changed from border-purple-500 */}
-            <h2 className="flex items-center text-2xl font-semibold mb-4 text-gray-700 dark:text-gray-300">
-              {" "}
-              {/* Changed from text-purple-600 */}
-              <FaInfoCircle className="mr-2 text-gray-500 dark:text-gray-400" />{" "}
-              What is MLFQ?
+          <div className="border-l-4 border-purple-500 pl-4 mb-4">
+            <h2 className="flex items-center text-2xl font-semibold mb-4 text-purple-600 dark:text-purple-400">
+              <FaInfoCircle className="mr-2" />
+              Apa itu MLFQ?
             </h2>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-            {" "}
-            {/* Changed bg-gray-50 and added border */}
+          <div className="bg-gradient-to-r from-purple-50 to-green-50 dark:from-purple-900/20 dark:to-green-900/20 rounded-lg p-6 shadow-sm border border-purple-100 dark:border-purple-700">
             <p className="mb-3 text-gray-600 dark:text-gray-400">
-              Multi-Level Feedback Queue (MLFQ) is a CPU scheduling algorithm
-              that attempts to optimize for both interactive and batch
-              processes. It uses multiple queues with different priority levels
-              and implements feedback to adjust process priorities based on
-              their behavior.
+              Multi-Level Feedback Queue (MLFQ) adalah algoritma penjadwalan CPU yang berusaha mengoptimalkan untuk proses interaktif dan batch. Algoritma ini menggunakan beberapa antrian dengan level prioritas yang berbeda dan mengimplementasikan feedback untuk menyesuaikan prioritas proses berdasarkan perilakunya.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-md shadow-sm border border-gray-100 dark:border-gray-700">
-                {" "}
-                {/* Changed from bg-white and added border */}
-                <div className="bg-gray-100 dark:bg-gray-600 p-2 rounded-full mr-3">
-                  {" "}
-                  {/* Changed from bg-purple-100 */}
-                  <FaLayerGroup className="text-gray-500 dark:text-gray-400" />{" "}
-                  {/* Changed from text-purple-600 */}
+              <div className="flex items-center p-3 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-800/30 dark:to-blue-800/30 rounded-md shadow-sm border border-purple-200 dark:border-purple-600">
+                <div className="bg-purple-200 dark:bg-purple-700 p-2 rounded-full mr-3">
+                  <FaLayerGroup className="text-purple-600 dark:text-purple-300" />
                 </div>
                 <div>
-                  <div className="font-medium text-gray-700 dark:text-gray-300">
-                    Multiple Priority Queues
+                  <div className="font-medium text-purple-700 dark:text-purple-300">
+                    Antrian Multi-Prioritas
                   </div>
                   <span className="text-sm text-gray-600 dark:text-gray-400">
-                    Processes are organized in queues of different priorities
+                    Proses diorganisir dalam antrian dengan prioritas berbeda
                   </span>
                 </div>
               </div>
-              <div className="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-md shadow-sm border border-gray-100 dark:border-gray-700">
-                {" "}
-                {/* Changed from bg-white and added border */}
-                <div className="bg-gray-100 dark:bg-gray-600 p-2 rounded-full mr-3">
-                  {" "}
-                  {/* Changed from bg-purple-100 */}
-                  <FaExchangeAlt className="text-gray-500 dark:text-gray-400" />{" "}
-                  {/* Changed from text-purple-600 */}
+              <div className="flex items-center p-3 bg-gradient-to-r from-blue-100 to-green-100 dark:from-blue-800/30 dark:to-green-800/30 rounded-md shadow-sm border border-blue-200 dark:border-blue-600">
+                <div className="bg-blue-200 dark:bg-blue-700 p-2 rounded-full mr-3">
+                  <FaExchangeAlt className="text-blue-600 dark:text-blue-300" />
                 </div>
                 <div>
-                  <div className="font-medium text-gray-700 dark:text-gray-300">
-                    Dynamic Priority Adjustment
+                  <div className="font-medium text-blue-700 dark:text-blue-300">
+                    Penyesuaian Prioritas Dinamis
                   </div>
                   <span className="text-sm text-gray-600 dark:text-gray-400">
-                    Process priorities change based on their behavior
+                    Prioritas proses berubah berdasarkan perilakunya
                   </span>
                 </div>
               </div>
@@ -148,175 +109,131 @@ export default function DocumentationPage() {
         </motion.div>
 
         <motion.div variants={item} className="mb-8">
-          {" "}
-          {/* Changed from mb-12 to mb-8 */}
-          <div className="border-l-2 border-gray-200 dark:border-gray-700 pl-4 mb-4">
-            {" "}
-            {/* Changed from border-green-500 */}
-            <h2 className="flex items-center text-2xl font-semibold mb-4 text-gray-700 dark:text-gray-300">
-              {" "}
-              {/* Changed from text-green-600 */}
-              <FaRocket className="mr-2 text-gray-500 dark:text-gray-400" />{" "}
-              Getting Started
+          <div className="border-l-4 border-green-500 pl-4 mb-4">
+            <h2 className="flex items-center text-2xl font-semibold mb-4 text-green-600 dark:text-green-400">
+              <FaRocket className="mr-2" />
+              Memulai
             </h2>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-            {" "}
-            {/* Changed bg-gray-50 and added border */}
+          <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg p-6 shadow-sm border border-green-100 dark:border-green-700">
             <p className="mb-3 text-gray-600 dark:text-gray-400">
-              To start using the MLFQ Simulation:
+              Untuk mulai menggunakan Simulasi MLFQ:
             </p>
             <ol className="space-y-3 list-decimal list-inside text-gray-600 dark:text-gray-400">
               <li className="pl-2">
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
-                  {" "}
-                  {/* Changed from text-green-600 */}
-                  Navigate to the home page
+                <span className="font-semibold text-green-600 dark:text-green-400">
+                  Navigasi ke halaman utama
                 </span>
               </li>
               <li className="pl-2">
-                Create new processes with different characteristics
+                Buat proses baru dengan karakteristik yang berbeda
                 <ul className="pl-6 mt-2 space-y-2 list-disc text-gray-600 dark:text-gray-400">
-                  <li>Arrival Time</li>
-                  <li>Burst Time</li>
-                  <li>Priority (optional)</li>
+                  <li>Waktu Kedatangan</li>
+                  <li>Waktu Burst</li>
+                  <li>Prioritas (opsional)</li>
                 </ul>
               </li>
-              <li className="pl-2">Configure the MLFQ parameters as needed</li>
+              <li className="pl-2">Konfigurasi parameter MLFQ sesuai kebutuhan</li>
               <li className="pl-2">
-                Start the simulation and observe the scheduling behavior
+                Mulai simulasi dan amati perilaku penjadwalan
               </li>
-              <li className="pl-2">Analyze the results and statistics</li>
+              <li className="pl-2">Analisis hasil dan statistik</li>
             </ol>
             <div className="mt-6 flex justify-center">
               <Link
                 href="/Documentation/how-to-use"
-                className="px-6 py-2 bg-gray-700 hover:bg-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500 text-white rounded-md transition-colors flex items-center shadow-sm"
-                /* Changed from bg-green-600 hover:bg-green-700 and shadow-md to shadow-sm */
+                className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg transition-all duration-300 flex items-center shadow-lg font-medium transform hover:scale-105"
               >
-                <FaRocket className="mr-2" /> Get Started Now
+                <FaRocket className="mr-2" /> Mulai Sekarang
               </Link>
             </div>
           </div>
         </motion.div>
 
         <motion.div variants={item} className="mb-8">
-          {" "}
-          {/* Changed from mb-12 to mb-8 */}
-          <div className="border-l-2 border-gray-200 dark:border-gray-700 pl-4 mb-4">
-            {" "}
-            {/* Changed from border-amber-500 */}
-            <h2 className="flex items-center text-2xl font-semibold mb-4 text-gray-700 dark:text-gray-300">
-              {" "}
-              {/* Changed from text-amber-600 */}
-              <FaList className="mr-2 text-gray-500 dark:text-gray-400" />{" "}
-              Documentation Sections
+          <div className="border-l-4 border-blue-500 pl-4 mb-4">
+            <h2 className="flex items-center text-2xl font-semibold mb-4 text-blue-600 dark:text-blue-400">
+              <FaList className="mr-2" />
+              Bagian Dokumentasi
             </h2>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-            {" "}
-            {/* Changed bg-gray-50 and added border */}
+          <div className="bg-gradient-to-r from-blue-50 via-purple-50 to-green-50 dark:from-blue-900/20 dark:via-purple-900/20 dark:to-green-900/20 rounded-lg p-6 shadow-sm border border-blue-100 dark:border-blue-700">
             <p className="mb-4 text-gray-600 dark:text-gray-400">
-              Our documentation is organized into several sections:
+              Dokumentasi kami terdiri dari beberapa bagian:
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Link
                 href="/Documentation/how-to-use"
-                className="block no-underline"
+                className="block no-underline transform hover:scale-105 transition-transform duration-200"
               >
-                <div className="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-md shadow-sm border border-gray-100 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                  {/* Changed from bg-white, added border, and changed hover */}
-                  <div className="bg-gray-100 dark:bg-gray-600 p-2 rounded-full mr-3">
-                    {" "}
-                    {/* Changed from bg-amber-100 */}
-                    <FaLaptopCode className="text-gray-500 dark:text-gray-400" />{" "}
-                    {/* Changed from text-amber-600 */}
+                <div className="flex items-center p-4 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-800/30 dark:to-purple-800/30 rounded-lg shadow-sm border border-blue-200 dark:border-blue-600 hover:shadow-md transition-shadow">
+                  <div className="bg-blue-200 dark:bg-blue-700 p-2 rounded-full mr-3">
+                    <FaLaptopCode className="text-blue-600 dark:text-blue-300" />
                   </div>
                   <div>
-                    <div className="font-medium text-gray-700 dark:text-gray-300">
-                      {" "}
-                      {/* Changed from text-amber-600 */}
-                      How to Use
+                    <div className="font-medium text-blue-700 dark:text-blue-300">
+                      Cara Penggunaan
                     </div>
                     <span className="text-sm text-gray-600 dark:text-gray-400">
-                      Detailed instructions on using the simulation
+                      Instruksi detail menggunakan simulasi
                     </span>
                   </div>
                 </div>
               </Link>
-              <Link href="/Documentation/tools" className="block no-underline">
-                <div className="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-md shadow-sm border border-gray-100 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                  {/* Changed from bg-white, added border, and changed hover */}
-                  <div className="bg-gray-100 dark:bg-gray-600 p-2 rounded-full mr-3">
-                    {" "}
-                    {/* Changed from bg-amber-100 */}
-                    <FaTools className="text-gray-500 dark:text-gray-400" />{" "}
-                    {/* Changed from text-amber-600 */}
+              <Link href="/Documentation/tools" className="block no-underline transform hover:scale-105 transition-transform duration-200">
+                <div className="flex items-center p-4 bg-gradient-to-r from-purple-100 to-green-100 dark:from-purple-800/30 dark:to-green-800/30 rounded-lg shadow-sm border border-purple-200 dark:border-purple-600 hover:shadow-md transition-shadow">
+                  <div className="bg-purple-200 dark:bg-purple-700 p-2 rounded-full mr-3">
+                    <FaTools className="text-purple-600 dark:text-purple-300" />
                   </div>
                   <div>
-                    <div className="font-medium text-gray-700 dark:text-gray-300">
-                      {" "}
-                      {/* Changed from text-amber-600 */}
-                      Tools & Technologies
+                    <div className="font-medium text-purple-700 dark:text-purple-300">
+                      Alat & Teknologi
                     </div>
                     <span className="text-sm text-gray-600 dark:text-gray-400">
-                      Information about the technologies used
+                      Informasi tentang teknologi yang digunakan
                     </span>
                   </div>
                 </div>
               </Link>
               <Link
                 href="/Documentation/how-it-works"
-                className="block no-underline"
+                className="block no-underline transform hover:scale-105 transition-transform duration-200"
               >
-                <div className="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-md shadow-sm border border-gray-100 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                  {/* Changed from bg-white, added border, and changed hover */}
-                  <div className="bg-gray-100 dark:bg-gray-600 p-2 rounded-full mr-3">
-                    {" "}
-                    {/* Changed from bg-amber-100 */}
-                    <FaCode className="text-gray-500 dark:text-gray-400" />{" "}
-                    {/* Changed from text-amber-600 */}
+                <div className="flex items-center p-4 bg-gradient-to-r from-green-100 to-blue-100 dark:from-green-800/30 dark:to-blue-800/30 rounded-lg shadow-sm border border-green-200 dark:border-green-600 hover:shadow-md transition-shadow">
+                  <div className="bg-green-200 dark:bg-green-700 p-2 rounded-full mr-3">
+                    <FaCode className="text-green-600 dark:text-green-300" />
                   </div>
                   <div>
-                    <div className="font-medium text-gray-700 dark:text-gray-300">
-                      {" "}
-                      {/* Changed from text-amber-600 */}
-                      How It Works
+                    <div className="font-medium text-green-700 dark:text-green-300">
+                      Cara Kerja
                     </div>
                     <span className="text-sm text-gray-600 dark:text-gray-400">
-                      Technical details about the MLFQ algorithm
+                      Detail teknis tentang algoritma MLFQ
                     </span>
                   </div>
                 </div>
               </Link>
               <Link
                 href="/Documentation/contact"
-                className="block no-underline"
+                className="block no-underline transform hover:scale-105 transition-transform duration-200"
               >
-                <div className="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-md shadow-sm border border-gray-100 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                  {/* Changed from bg-white, added border, and changed hover */}
-                  <div className="bg-gray-100 dark:bg-gray-600 p-2 rounded-full mr-3">
-                    {" "}
-                    {/* Changed from bg-amber-100 */}
-                    <FaQuestionCircle className="text-gray-500 dark:text-gray-400" />{" "}
-                    {/* Changed from text-amber-600 */}
+                <div className="flex items-center p-4 bg-gradient-to-r from-blue-100 to-green-100 dark:from-blue-800/30 dark:to-green-800/30 rounded-lg shadow-sm border border-blue-200 dark:border-blue-600 hover:shadow-md transition-shadow">
+                  <div className="bg-blue-200 dark:bg-blue-700 p-2 rounded-full mr-3">
+                    <FaQuestionCircle className="text-blue-600 dark:text-blue-300" />
                   </div>
                   <div>
-                    <div className="font-medium text-gray-700 dark:text-gray-300">
-                      {" "}
-                      {/* Changed from text-amber-600 */}
-                      Contact & Support
+                    <div className="font-medium text-blue-700 dark:text-blue-300">
+                      Kontak & Dukungan
                     </div>
                     <span className="text-sm text-gray-600 dark:text-gray-400">
-                      Get help and support
+                      Dapatkan bantuan dan dukungan
                     </span>
                   </div>
                 </div>
               </Link>
             </div>
             <p className="mt-6 text-center text-gray-600 dark:text-gray-400">
-              Use the navigation menu on the left to explore these sections and
-              learn more about the MLFQ Simulation.
+              Gunakan menu navigasi di sebelah kiri untuk menjelajahi bagian-bagian ini dan mempelajari lebih lanjut tentang Simulasi MLFQ.
             </p>
           </div>
         </motion.div>

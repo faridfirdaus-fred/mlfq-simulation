@@ -52,7 +52,7 @@ interface FormSchemaType {
 }
 
 const formSchema = z.object({
-  pid: z.string().min(1, { message: "Process ID is required" }),
+  pid: z.string().min(1, { message: "ID Proses harus diisi" }),
   arrival_time: z.coerce.number().min(0),
   burst_time: z.coerce.number().min(1),
   priority: z.coerce.number().min(0),
@@ -98,8 +98,8 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
 
     // Show success feedback
     setSubmitted(true);
-    toast.success("Process Added", {
-      description: `Process ${processData.pid} added to simulation`,
+    toast.success("Proses Berhasil Ditambahkan", {
+      description: `Proses ${processData.pid} ditambahkan ke simulasi`,
     });
 
     // Reset the success state after a short delay
@@ -127,8 +127,8 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
     form.setValue("priority", template.priority);
     form.setValue("io_time", template.io_time);
 
-    toast.info("Template Loaded", {
-      description: `${templateName} template values loaded`,
+    toast.info("Template Dimuat", {
+      description: `Template ${templateName} berhasil dimuat`,
     });
   };
 
@@ -138,7 +138,7 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
 
     if (ioTime === 0) return "CPU-bound";
     if (ioTime > burstTime) return "I/O-bound";
-    return "Mixed";
+    return "Campuran";
   };
 
   const processTypeColor = () => {
@@ -146,37 +146,37 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
 
     switch (type) {
       case "CPU-bound":
-        return "bg-blue-50 text-blue-800 border-blue-200";
+        return "bg-blue-50 text-blue-800 border-blue-300 dark:bg-blue-900/30 dark:text-blue-300";
       case "I/O-bound":
-        return "bg-green-50 text-green-800 border-green-200";
-      case "Mixed":
-        return "bg-purple-50 text-purple-800 border-purple-200";
+        return "bg-green-50 text-green-800 border-green-300 dark:bg-green-900/30 dark:text-green-300";
+      case "Campuran":
+        return "bg-purple-50 text-purple-800 border-purple-300 dark:bg-purple-900/30 dark:text-purple-300";
       default:
         return "bg-gray-50 text-gray-800 border-gray-200";
     }
   };
 
   return (
-    <Card className="border-gray-100 dark:border-gray-700 relative overflow-hidden">
+    <Card className="border-gray-100 dark:border-gray-700 relative overflow-hidden shadow-lg">
       {lastAdded && (
-        <div className="absolute top-0 left-0 w-full h-1.5">
-          <div className="bg-gradient-to-r from-emerald-500 to-blue-500 h-full" />
+        <div className="absolute top-0 left-0 w-full h-2">
+          <div className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 h-full animate-pulse" />
         </div>
       )}
 
-      <CardHeader className="border-b border-gray-100 dark:border-gray-700 flex flex-row justify-between items-center">
+      <CardHeader className="border-b border-gray-100 dark:border-gray-700 flex flex-row justify-between items-center bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
         <motion.div
           className="flex items-center gap-2"
           initial={{ x: -10, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <Cpu className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+          <Cpu className="h-5 w-5 text-blue-600 dark:text-blue-400" />
           <CardTitle className="text-gray-700 dark:text-gray-300">
-            Define Process
+            Definisi Proses
             <Badge
               variant="outline"
-              className={`ml-2 ${processTypeColor()} dark:bg-opacity-20 dark:border-opacity-40`}
+              className={`ml-2 ${processTypeColor()}`}
             >
               {getProcessType()}
             </Badge>
@@ -191,14 +191,14 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 text-gray-500"
+                    className="h-8 w-8 p-0 text-purple-600 hover:text-purple-700 hover:bg-purple-50 dark:text-purple-400 dark:hover:bg-purple-900/20"
                   >
                     <Database className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Load template</p>
+                <p>Muat template</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -206,19 +206,19 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={() => loadTemplate("basic")}>
               <Layers className="mr-2 h-4 w-4 text-gray-500" />
-              <span>Basic Process</span>
+              <span>Proses Dasar</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => loadTemplate("cpuBound")}>
               <Cpu className="mr-2 h-4 w-4 text-blue-500" />
-              <span>CPU-bound Process</span>
+              <span>Proses CPU-bound</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => loadTemplate("ioBound")}>
               <Database className="mr-2 h-4 w-4 text-green-500" />
-              <span>I/O-bound Process</span>
+              <span>Proses I/O-bound</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => loadTemplate("mixed")}>
               <Layers className="mr-2 h-4 w-4 text-purple-500" />
-              <span>Mixed Process</span>
+              <span>Proses Campuran</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -226,51 +226,51 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
 
       <CardContent className="pt-4">
         {lastAdded && (
-          <div className="mb-4 px-3 py-2 rounded-md bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50">
-            <h4 className="text-sm font-medium mb-1 text-emerald-700 dark:text-emerald-300">
-              Last Added Process: {lastAdded.pid}
+          <div className="mb-4 px-3 py-3 rounded-lg bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border border-green-200 dark:border-green-800/50">
+            <h4 className="text-sm font-medium mb-2 text-green-700 dark:text-green-300">
+              Proses Terakhir Ditambahkan: {lastAdded.pid}
             </h4>
             <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
               <div>
                 <span className="text-gray-500 dark:text-gray-400">
-                  Burst time:
+                  Waktu CPU:
                 </span>
-                <span className="ml-2 text-gray-800 dark:text-gray-200">
+                <span className="ml-2 text-gray-800 dark:text-gray-200 font-medium">
                   {lastAdded.burst_time}
                 </span>
               </div>
               <div>
                 <span className="text-gray-500 dark:text-gray-400">
-                  I/O time:
+                  Waktu I/O:
                 </span>
-                <span className="ml-2 text-gray-800 dark:text-gray-200">
+                <span className="ml-2 text-gray-800 dark:text-gray-200 font-medium">
                   {lastAdded.io_time}
                 </span>
               </div>
               <div>
                 <span className="text-gray-500 dark:text-gray-400">
-                  Arrival:
+                  Kedatangan:
                 </span>
-                <span className="ml-2 text-gray-800 dark:text-gray-200">
+                <span className="ml-2 text-gray-800 dark:text-gray-200 font-medium">
                   {lastAdded.arrival_time}
                 </span>
               </div>
               <div>
                 <span className="text-gray-500 dark:text-gray-400">
-                  Priority:
+                  Prioritas:
                 </span>
-                <span className="ml-2 text-gray-800 dark:text-gray-200">
+                <span className="ml-2 text-gray-800 dark:text-gray-200 font-medium">
                   {lastAdded.priority}
                 </span>
               </div>
             </div>
-            <p className="text-xs mt-1 text-gray-500 dark:text-gray-400 italic">
-              Process type:{" "}
+            <p className="text-xs mt-2 text-gray-500 dark:text-gray-400 italic">
+              Jenis proses:{" "}
               {lastAdded.io_time === 0
                 ? "CPU-bound"
                 : lastAdded.io_time > lastAdded.burst_time
                 ? "I/O-bound"
-                : "Mixed"}
+                : "Campuran"}
             </p>
           </div>
         )}
@@ -292,7 +292,7 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-700 dark:text-gray-300 flex items-center">
-                        <span>Process ID</span>
+                        <span>ID Proses</span>
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -308,21 +308,20 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
                               className="max-w-xs text-xs"
                             >
                               <p>
-                                A unique identifier for the process (e.g., P1,
-                                P2)
+                                Pengenal unik untuk proses (contoh: P1, P2)
                               </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </FormLabel>
                       <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
-                        Must be unique among all processes
+                        Harus unik di antara semua proses
                       </FormDescription>
                       <FormControl>
                         <Input
                           placeholder={`P${processCount + 1}`}
                           {...field}
-                          className="border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-500"
+                          className="border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-blue-500/20"
                         />
                       </FormControl>
                       <FormMessage />
@@ -342,7 +341,7 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-700 dark:text-gray-300 flex items-center">
-                        <span>Arrival Time</span>
+                        <span>Waktu Kedatangan</span>
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -358,21 +357,20 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
                               className="max-w-xs text-xs"
                             >
                               <p>
-                                When the process enters the system (in time
-                                units)
+                                Kapan proses masuk ke sistem (dalam unit waktu)
                               </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </FormLabel>
                       <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
-                        When the process enters the ready queue
+                        Kapan proses masuk ke antrian siap
                       </FormDescription>
                       <FormControl>
                         <Input
                           type="number"
                           {...field}
-                          className="border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-500"
+                          className="border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-blue-500/20"
                         />
                       </FormControl>
                       <FormMessage />
@@ -392,7 +390,7 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-700 dark:text-gray-300 flex items-center">
-                        <span>CPU Burst Time</span>
+                        <span>Waktu CPU Burst</span>
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -408,21 +406,20 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
                               className="max-w-xs text-xs"
                             >
                               <p>
-                                Total time required for CPU execution (in time
-                                units)
+                                Total waktu yang diperlukan untuk eksekusi CPU (dalam unit waktu)
                               </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </FormLabel>
                       <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
-                        Time required for CPU execution
+                        Waktu yang dibutuhkan untuk eksekusi CPU
                       </FormDescription>
                       <FormControl>
                         <Input
                           type="number"
                           {...field}
-                          className="border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-500"
+                          className="border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-blue-500/20"
                         />
                       </FormControl>
                       <FormMessage />
@@ -442,7 +439,7 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-700 dark:text-gray-300 flex items-center">
-                        <span>I/O Time</span>
+                        <span>Waktu I/O</span>
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -458,21 +455,20 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
                               className="max-w-xs text-xs"
                             >
                               <p>
-                                Time spent in I/O operations after CPU burst
-                                completes
+                                Waktu yang dihabiskan untuk operasi I/O setelah CPU burst selesai
                               </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </FormLabel>
                       <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
-                        Time spent in I/O operations
+                        Waktu yang dihabiskan untuk operasi I/O
                       </FormDescription>
                       <FormControl>
                         <Input
                           type="number"
                           {...field}
-                          className="border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-500"
+                          className="border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-blue-500/20"
                         />
                       </FormControl>
                       <FormMessage />
@@ -492,7 +488,7 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-700 dark:text-gray-300 flex items-center">
-                        <span>Priority</span>
+                        <span>Prioritas</span>
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -508,21 +504,20 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
                               className="max-w-xs text-xs"
                             >
                               <p>
-                                Initial process priority (maps to starting queue
-                                level)
+                                Prioritas awal proses (berpengaruh pada level antrian awal)
                               </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </FormLabel>
                       <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
-                        Initial process priority (lower = higher priority)
+                        Prioritas awal proses (lebih rendah = prioritas lebih tinggi)
                       </FormDescription>
                       <FormControl>
                         <Input
                           type="number"
                           {...field}
-                          className="border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-500"
+                          className="border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-blue-500/20"
                         />
                       </FormControl>
                       <FormMessage />
@@ -536,26 +531,26 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.45 }}
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               <Button
                 type="submit"
                 className={`w-full flex gap-2 items-center justify-center transition-all duration-300 ${
                   submitted
-                    ? "bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600"
-                    : "bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-700 dark:hover:bg-emerald-600 shadow-md"
-                } text-white`}
+                    ? "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 dark:from-green-600 dark:to-green-700 shadow-lg"
+                    : "bg-gradient-to-r from-blue-500 via-purple-500 to-green-500 hover:from-blue-600 hover:via-purple-600 hover:to-green-600 shadow-lg"
+                } text-white font-medium`}
               >
                 {submitted ? (
                   <>
                     <Check className="h-4 w-4" />
-                    Process Added
+                    Proses Berhasil Ditambahkan
                   </>
                 ) : (
                   <>
                     <PlusCircle className="h-4 w-4" />
-                    Add Process
+                    Tambah Proses
                   </>
                 )}
               </Button>
