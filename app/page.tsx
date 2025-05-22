@@ -13,6 +13,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { DEFAULT_CONFIG } from "@/lib/constants";
+import ProcessMonitor from "@/components/ProccesMonitor"; // Fix the import path
 
 export default function SimulationPage() {
   const [processes, setProcesses] = useState<Process[]>([]);
@@ -159,8 +160,32 @@ export default function SimulationPage() {
 
       {/* Results Display */}
       {isSimulated && results && (
-        <div className="transform hover:scale-[1.005] transition-transform duration-300">
+        <div className="space-y-8">
           <ResultsDisplay results={results} totalTime={totalTime} />
+
+          {/* Process Monitor - Show visualization */}
+          <div className="mt-10">
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+              Process Execution Visualization
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              Below is a dynamic visualization of how processes execute in the
+              MLFQ scheduler. You can use the playback controls to see the state
+              of processes at different time points.
+            </p>
+
+            {/* Simple transformation without complex nested processing */}
+            <ProcessMonitor
+              processes={results.map((process) => ({
+                ...process,
+                original_io_time: process.io_time || 0,
+                // Simplified execution_log handling
+                execution_log: [],
+              }))}
+              totalSimulationTime={totalTime}
+              activeConfig={config}
+            />
+          </div>
         </div>
       )}
     </main>
