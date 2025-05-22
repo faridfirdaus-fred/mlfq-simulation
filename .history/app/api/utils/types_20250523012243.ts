@@ -5,7 +5,6 @@ export interface Process {
   arrival_time?: number;
   burst_time?: number;
   io_time?: number;
-  priority?: number; // Added this missing field
   waiting_time?: number;
   remaining_io_time?: number;
   start_time?: number;

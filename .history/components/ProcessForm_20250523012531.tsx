@@ -271,7 +271,7 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
               Process type:{" "}
               {lastAdded.io_time === 0
                 ? "CPU-bound"
-                : (lastAdded.io_time ?? 0) > (lastAdded.burst_time ?? 0)
+                : lastAdded.io_time > lastAdded.burst_time
                 ? "I/O-bound"
                 : "Mixed"}
             </p>

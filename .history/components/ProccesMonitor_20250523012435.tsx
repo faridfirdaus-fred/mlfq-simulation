@@ -299,10 +299,7 @@ const ProcessMonitor: React.FC<ProcessMonitorProps> = ({
 
     finalProcesses.forEach((p) => {
       const statusInfo = getProcessStatusAtReplayTime(p, replayTime);
-      // Jangan assign p.state jika statusInfo.state bukan tipe yang diizinkan
-      // Simpan statusInfo.state dalam variabel lokal jika perlu
-      const displayState = statusInfo.state;
-
+      p.state = statusInfo.state; // Update state sementara untuk tampilan
       p.queue =
         statusInfo.currentQueue !== undefined
           ? statusInfo.currentQueue
@@ -316,9 +313,9 @@ const ProcessMonitor: React.FC<ProcessMonitorProps> = ({
           ? statusInfo.ioRemaining
           : p.remaining_io_time;
 
-      if (displayState === "running") {
+      if (statusInfo.state === "running") {
         runningPID = p.pid;
-      } else if (displayState === "ready") {
+      } else if (statusInfo.state === "ready") {
         if (
           p.queue !== undefined &&
           p.queue >= 0 &&
@@ -329,11 +326,11 @@ const ProcessMonitor: React.FC<ProcessMonitorProps> = ({
           // Jika queue tidak valid, masukkan ke Q0 sebagai fallback
           readyProcessesByQueue[0].push(p);
         }
-      } else if (displayState === "blocked") {
+      } else if (statusInfo.state === "blocked") {
         ioQueueProcesses.push(p);
-      } else if (displayState === "finished") {
+      } else if (statusInfo.state === "finished") {
         finishedPIDs.push(p.pid);
-      } else if (displayState === "new") {
+      } else if (statusInfo.state === "new") {
         newPIDs.push(p.pid);
       }
     });

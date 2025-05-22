@@ -48,10 +48,9 @@ const StatisticsAnalysis: React.FC<StatisticsAnalysisProps> = ({
     const cpuUtilization = totalTime > 0 ? (totalCpuTime / totalTime) * 100 : 0;
 
     // Throughput (processes per unit time)
-    const throughput =
-      totalTime > 0
-        ? processes.filter((p) => p.state === "finished").length / totalTime
-        : 0;
+    const throughput = totalTime > 0 
+      ? processes.filter((p) => p.state === "finished").length / totalTime 
+      : 0;
 
     // Calculate response times
     // Log for debugging
@@ -127,8 +126,7 @@ const StatisticsAnalysis: React.FC<StatisticsAnalysisProps> = ({
       processes.length > 0 ? totalResponseTime / processes.length : 0
     );
 
-    const avgResponseTime =
-      processes.length > 0 ? totalResponseTime / processes.length : 0;
+    const avgResponseTime = processes.length > 0 ? totalResponseTime / processes.length : 0;
 
     return {
       cpuUtilization,
@@ -139,7 +137,7 @@ const StatisticsAnalysis: React.FC<StatisticsAnalysisProps> = ({
       totalIoTime,
       totalWaitingTime,
     };
-    // Only depend on totalTime, not processes (will recalculate when processes change anyway)
+  // Only depend on totalTime, not processes (will recalculate when processes change anyway)
   }, [totalTime, processes]);
 
   // If no metrics are available, don't render anything
