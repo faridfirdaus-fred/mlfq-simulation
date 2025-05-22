@@ -13,6 +13,7 @@ import {
   HardDrive,
   Timer,
   Clock,
+  CheckSquare,
   Layers,
   ArrowDownUp,
 } from "lucide-react";

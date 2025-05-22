@@ -91,7 +91,7 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
       burst_time: values.burst_time,
       priority: values.priority,
       io_time: values.io_time,
-      cpu_bursts: (cpu_bursts: number[]) => { return cpu_bursts; },
+      cpu_bursts: [],
       execution_log: false,
       first_execution_time: null,
     };
