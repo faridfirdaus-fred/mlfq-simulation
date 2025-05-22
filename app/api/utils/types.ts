@@ -1,4 +1,5 @@
 export interface Process {
+  cpu_bursts(cpu_bursts: any): unknown;
   execution_log: boolean;
   first_execution_time: null;
   pid: string;
