@@ -12,15 +12,11 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
+import { DEFAULT_CONFIG } from "@/lib/constants";
 
 export default function SimulationPage() {
   const [processes, setProcesses] = useState<Process[]>([]);
-  const [config, setConfig] = useState<SimulationConfig>({
-    num_queues: 3,
-    time_slice: 2,
-    boost_interval: 100,
-    aging_threshold: 5,
-  });
+  const [config, setConfig] = useState<SimulationConfig>(DEFAULT_CONFIG);
   const [results, setResults] = useState<Process[] | null>(null);
   const [totalTime, setTotalTime] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
@@ -123,7 +119,11 @@ export default function SimulationPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         {/* Configuration Form */}
-        <ConfigForm onSubmit={handleUpdateConfig} defaultValues={config} />
+        <ConfigForm
+          onSubmit={handleUpdateConfig}
+          defaultValues={DEFAULT_CONFIG}
+          isSimulationRunning={isLoading}
+        />
 
         {/* Process Form */}
         <ProcessForm onSubmit={handleAddProcess} />
