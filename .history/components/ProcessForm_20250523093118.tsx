@@ -90,11 +90,11 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
       arrival_time: values.arrival_time,
       burst_time: values.burst_time,
       io_time: values.io_time,
-      priority: values.priority, 
+      
       execution_log: [],
       first_execution_time: null,
       state: "ready", // or the appropriate default state
-      queue: 0, // or the appropriate default queue
+      queue: 0,       // or the appropriate default queue
     };
 
     onSubmit(processData);
