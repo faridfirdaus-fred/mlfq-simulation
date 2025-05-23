@@ -27,15 +27,15 @@ export default function SimulationPage() {
   const handleAddProcess = (process: Process) => {
     // Check if PID is already used
     if (processes.some((p) => p.pid === process.pid)) {
-      toast.error("Process ID already in use", {
-        description: `Process ID "${process.pid}" is already in use. Please choose a different ID.`,
+      toast.error("ID Proses sudah digunakan", {
+        description: `ID Proses "${process.pid}" sudah digunakan. Silakan pilih ID yang berbeda.`,
       });
       return;
     }
 
     setProcesses([...processes, process]);
-    toast.success("Process added", {
-      description: `Process ${process.pid} has been added to the simulation.`,
+    toast.success("Proses berhasil ditambahkan", {
+      description: `Proses ${process.pid} telah ditambahkan ke simulasi.`,
     });
     setError(null);
     setIsSimulated(false);
@@ -50,15 +50,15 @@ export default function SimulationPage() {
 
   const handleRemoveProcess = (pid: string) => {
     setProcesses(processes.filter((p) => p.pid !== pid));
-    toast.info(`Process ${pid} removed`);
+    toast.info(`Proses ${pid} dihapus`);
     setIsSimulated(false);
   };
 
   const handleStartSimulation = async () => {
     if (processes.length === 0) {
-      toast.error("No processes to simulate", {
+      toast.error("Tidak ada proses untuk disimulasikan", {
         description:
-          "Please add at least one process before running simulation.",
+          "Silakan tambahkan setidaknya satu proses sebelum menjalankan simulasi.",
       });
       return;
     }
@@ -66,7 +66,7 @@ export default function SimulationPage() {
     setIsLoading(true);
     setError(null);
 
-    const toastId = toast.loading("Running simulation...", {
+    const toastId = toast.loading("Menjalankan simulasi...", {
       id: "simulation",
     });
 
@@ -76,17 +76,17 @@ export default function SimulationPage() {
       setResults(result.processes);
       setTotalTime(result.total_time);
       setIsSimulated(true);
-      toast.success("Simulation completed", {
+      toast.success("Simulasi berhasil diselesaikan", {
         id: toastId,
-        description: `Total simulation time: ${result.total_time} units`,
+        description: `Total waktu simulasi: ${result.total_time} unit`,
       });
     } catch (err) {
       const errorMsg =
         err instanceof Error
           ? err.message
-          : "An error occurred during simulation";
+          : "Terjadi kesalahan saat menjalankan simulasi";
       setError(errorMsg);
-      toast.error("Simulation failed", {
+      toast.error("Simulasi gagal", {
         id: toastId,
         description: errorMsg,
       });
@@ -100,39 +100,49 @@ export default function SimulationPage() {
     setResults(null);
     setError(null);
     setIsSimulated(false);
-    toast.info("All data cleared");
+    toast.info("Semua data dibersihkan");
   };
 
   return (
     <main className="container mx-auto py-8 max-w-7xl">
       <Toaster />
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-8 text-center">
-        Multi-Level Feedback Queue Scheduler Simulation
-      </h1>
+      {/* Header dengan gradient */}
+      <div className="text-center mb-8 p-6 rounded-xl bg-gradient-to-r from-blue-50 via-purple-50 to-green-50 dark:from-blue-900/20 dark:via-purple-900/20 dark:to-green-900/20 border border-blue-100 dark:border-blue-800">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent mb-3">
+          Simulasi Penjadwalan Multi-Level Feedback Queue
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400 text-lg">
+          Visualisasi interaktif algoritma penjadwalan MLFQ untuk sistem operasi
+        </p>
+      </div>
 
       {error && (
-        <Alert variant="destructive" className="mb-6">
+        <Alert variant="destructive" className="mb-6 border-red-200 bg-red-50 dark:bg-red-900/20">
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
+          <AlertTitle>Kesalahan</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         {/* Configuration Form */}
-        <ConfigForm
-          onSubmit={handleUpdateConfig}
-          defaultValues={DEFAULT_CONFIG}
-          isSimulationRunning={isLoading}
-        />
+        <div className="transform hover:scale-[1.02] transition-transform duration-200">
+          <ConfigForm
+            onSubmit={handleUpdateConfig}
+            defaultValues={DEFAULT_CONFIG}
+            isSimulationRunning={isLoading}
+          />
+        </div>
 
         {/* Process Form */}
-        <ProcessForm onSubmit={handleAddProcess} />
+        <div className="transform hover:scale-[1.02] transition-transform duration-200">
+          <ProcessForm onSubmit={handleAddProcess} />
+        </div>
       </div>
 
       {/* Process Table */}
       {processes.length > 0 && (
-        <div className="mb-8">
+        <div className="mb-8 transform hover:scale-[1.01] transition-transform duration-200">
           <ProcessTable processes={processes} onRemove={handleRemoveProcess} />
         </div>
       )}
