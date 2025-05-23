@@ -7,7 +7,7 @@ export interface Process {
   io_time?: number;
   priority?: number; // Added this missing field
   waiting_time?: number;
-  turnaround_time?: number;
+  turnaround_time;
   remaining_io_time?: number;
   start_time?: number;
   finish_time?: number;
