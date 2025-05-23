@@ -124,8 +124,8 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
 
     // Show success feedback with more context
     setSubmitted(true);
-    toast.success("Configuration Applied", {
-      description: `Simulation will use ${configData.num_queues} queues with ${configData.time_slice}ms time slice`,
+    toast.success("Konfigurasi Berhasil Diterapkan", {
+      description: `Simulasi akan menggunakan ${configData.num_queues} antrian dengan ${configData.time_slice} unit waktu slice`,
     });
 
     // Reset the feedback after a short delay
@@ -141,22 +141,22 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
     setActiveConfig(defaultConfig);
     onSubmit(defaultConfig);
 
-    toast.info("Configuration Reset", {
-      description: "Settings have been reset to defaults",
+    toast.info("Konfigurasi Direset", {
+      description: "Pengaturan telah dikembalikan ke nilai default",
     });
 
     setTimeout(() => setIsResetting(false), 1000);
   };
 
   const isChanged = () => {
-    if (!activeConfig) return false;
+    if (!activeConfig) return true; // Allow initial submission
 
     const currentValues = form.getValues();
     return (
-      currentValues.num_queues !== activeConfig.num_queues ||
-      currentValues.time_slice !== activeConfig.time_slice ||
-      currentValues.boost_interval !== activeConfig.boost_interval ||
-      currentValues.aging_threshold !== activeConfig.aging_threshold
+      Number(currentValues.num_queues) !== Number(activeConfig.num_queues) ||
+      Number(currentValues.time_slice) !== Number(activeConfig.time_slice) ||
+      Number(currentValues.boost_interval) !== Number(activeConfig.boost_interval) ||
+      Number(currentValues.aging_threshold) !== Number(activeConfig.aging_threshold)
     );
   };
 
@@ -174,29 +174,29 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
   };
 
   return (
-    <Card className="border-gray-100 dark:border-gray-700 relative overflow-hidden">
+    <Card className="border-gray-100 dark:border-gray-700 relative overflow-hidden shadow-lg">
       {activeConfig && (
-        <div className="absolute top-0 left-0 w-full h-1.5">
-          <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-full" />
+        <div className="absolute top-0 left-0 w-full h-2">
+          <div className="bg-gradient-to-r from-purple-400 via-blue-500 to-green-500 h-full animate-pulse" />
         </div>
       )}
 
-      <CardHeader className="border-b border-gray-100 dark:border-gray-700 flex flex-row justify-between items-center">
+      <CardHeader className="border-b border-gray-100 dark:border-gray-700 flex flex-row justify-between items-center bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20">
         <motion.div
           className="flex items-center gap-2"
           initial={{ x: -10, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <Settings className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+          <Settings className="h-5 w-5 text-purple-600 dark:text-purple-400" />
           <CardTitle className="text-gray-700 dark:text-gray-300">
-            Simulation Configuration
+            Konfigurasi Simulasi
             {activeConfig && (
               <Badge
                 variant="outline"
-                className="ml-2 bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800"
+                className="ml-2 bg-purple-50 text-purple-700 border-purple-300 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-700"
               >
-                Active
+                Aktif
               </Badge>
             )}
           </CardTitle>
@@ -208,7 +208,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 p-0 text-gray-500"
+                className="h-8 w-8 p-0 text-purple-600 hover:text-purple-700 hover:bg-purple-50 dark:text-purple-400 dark:hover:bg-purple-900/20"
                 onClick={resetToDefaults}
                 disabled={isSimulationRunning || isResetting}
               >
@@ -236,7 +236,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Reset to defaults</p>
+              <p>Reset ke default</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -245,10 +245,10 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
       <CardContent className="pt-4">
         {activeConfig && (
           <>
-            <div className="mb-4 grid grid-cols-2 gap-4 px-3 py-2 rounded-md bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50">
+            <div className="mb-4 grid grid-cols-2 gap-4 px-3 py-3 rounded-lg bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border border-purple-200 dark:border-purple-800/50">
               <div className="text-sm">
                 <span className="text-gray-500 dark:text-gray-400">
-                  Queues:
+                  Antrian:
                 </span>
                 <span className="ml-2 font-medium text-gray-800 dark:text-gray-200">
                   {activeConfig.num_queues}
@@ -276,46 +276,45 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
               </div>
             </div>
 
-            <div className="mb-4 px-3 py-2 rounded-md bg-gray-50 dark:bg-gray-900/20 border border-gray-100 dark:border-gray-800/50">
-              <h4 className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                Time Quantum per Queue
+            <div className="mb-4 px-3 py-3 rounded-lg bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border border-green-200 dark:border-green-800/50">
+              <h4 className="text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">
+                Kuantum Waktu per Antrian
               </h4>
               <div className="grid grid-cols-1 gap-2">
                 {timeQuantumDetails().map((item) => (
                   <motion.div
                     key={item.queue}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-3"
                     initial={{ opacity: 0, x: -5 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: item.queue * 0.1 }}
                   >
-                    <span className="text-xs w-14 text-gray-600 dark:text-gray-400">
-                      Queue {item.queue}:
+                    <span className="text-xs w-16 text-gray-600 dark:text-gray-400 font-medium">
+                      Antrian {item.queue}:
                     </span>
                     <div
-                      className="h-4 rounded-sm transition-all duration-300"
+                      className="h-4 rounded-full transition-all duration-300 shadow-sm"
                       style={{
-                        width: `${item.quantum * 8}px`,
+                        width: `${Math.max(item.quantum * 8, 24)}px`,
                         backgroundColor: item.color,
                       }}
                     ></div>
-                    <span className="text-xs text-gray-600 dark:text-gray-400">
-                      {item.quantum} units
+                    <span className="text-xs text-gray-600 dark:text-gray-400 font-medium">
+                      {item.quantum} unit
                     </span>
                   </motion.div>
                 ))}
               </div>
-              <p className="text-xs mt-2 text-gray-500 dark:text-gray-400">
-                Lower queue numbers have higher priority but smaller time
-                quantum.
+              <p className="text-xs mt-3 text-gray-500 dark:text-gray-400 italic">
+                Nomor antrian yang lebih kecil memiliki prioritas lebih tinggi namun kuantum waktu lebih kecil.
               </p>
             </div>
 
             {configInfo.lastApplied && (
               <div className="mb-4 text-xs text-gray-500 dark:text-gray-400 italic text-center">
-                Last applied {configInfo.lastApplied.toLocaleTimeString()}
+                Terakhir diterapkan {configInfo.lastApplied.toLocaleTimeString()}
                 {configInfo.appliedTo > 0 &&
-                  ` (affects ${configInfo.appliedTo} process sets)`}
+                  ` (mempengaruhi ${configInfo.appliedTo} set proses)`}
               </div>
             )}
           </>
@@ -334,7 +333,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
                 className={
                   activeConfig &&
                   form.getValues().num_queues !== activeConfig.num_queues
-                    ? "ring-2 ring-blue-200 dark:ring-blue-800 rounded-lg p-3"
+                    ? "ring-2 ring-purple-200 dark:ring-purple-800 rounded-lg p-3"
                     : "p-3"
                 }
               >
@@ -345,7 +344,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
                     <FormItem>
                       <FormLabel className="text-gray-700 dark:text-gray-300 flex items-center justify-between">
                         <div className="flex items-center">
-                          <span>Number of Queues</span>
+                          <span>Jumlah Antrian</span>
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
@@ -367,20 +366,20 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
                         </div>
                         {activeConfig &&
                           field.value !== activeConfig.num_queues && (
-                            <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300">
-                              Changed
+                            <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-300">
+                              Berubah
                             </Badge>
                           )}
                       </FormLabel>
                       <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
-                        Number of priority levels in MLFQ (1-10)
+                        Jumlah level prioritas dalam MLFQ (1-10)
                       </FormDescription>
                       <FormControl>
                         <Input
                           type="number"
-                          placeholder="4" // Tambahkan placeholder yang sesuai dengan default
+                          placeholder="4"
                           {...field}
-                          className="border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500"
+                          className="border-gray-200 dark:border-gray-600 focus:border-purple-500 dark:focus:border-purple-500 focus:ring-purple-500/20"
                         />
                       </FormControl>
                       <FormMessage />
@@ -406,22 +405,42 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-700 dark:text-gray-300 flex items-center justify-between">
-                        <span>Time Slice</span>
+                        <div className="flex items-center">
+                          <span>Time Slice</span>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  className="h-4 w-4 p-0 ml-1"
+                                >
+                                  <Info className="h-3 w-3 text-gray-400" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent
+                                side="top"
+                                className="max-w-xs text-xs"
+                              >
+                                <p>{CONFIG_TOOLTIPS.time_slice}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
                         {activeConfig &&
                           field.value !== activeConfig.time_slice && (
-                            <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300">
-                              Changed
+                            <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-300">
+                              Berubah
                             </Badge>
                           )}
                       </FormLabel>
                       <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
-                        Base time quantum for highest priority queue
+                        Kuantum waktu dasar untuk antrian prioritas tertinggi
                       </FormDescription>
                       <FormControl>
                         <Input
                           type="number"
                           {...field}
-                          className="border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500"
+                          className="border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-blue-500/20"
                         />
                       </FormControl>
                       <FormMessage />
@@ -438,7 +457,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
                   activeConfig &&
                   form.getValues().boost_interval !==
                     activeConfig.boost_interval
-                    ? "ring-2 ring-blue-200 dark:ring-blue-800 rounded-lg p-3"
+                    ? "ring-2 ring-green-200 dark:ring-green-800 rounded-lg p-3"
                     : "p-3"
                 }
               >
@@ -448,22 +467,42 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-700 dark:text-gray-300 flex items-center justify-between">
-                        <span>Boost Interval</span>
+                        <div className="flex items-center">
+                          <span>Interval Boost</span>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  className="h-4 w-4 p-0 ml-1"
+                                >
+                                  <Info className="h-3 w-3 text-gray-400" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent
+                                side="top"
+                                className="max-w-xs text-xs"
+                              >
+                                <p>{CONFIG_TOOLTIPS.boost_interval}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
                         {activeConfig &&
                           field.value !== activeConfig.boost_interval && (
-                            <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300">
-                              Changed
+                            <Badge className="bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-300">
+                              Berubah
                             </Badge>
                           )}
                       </FormLabel>
                       <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
-                        Time interval for priority boost (time units)
+                        Interval waktu untuk boost prioritas (unit waktu)
                       </FormDescription>
                       <FormControl>
                         <Input
                           type="number"
                           {...field}
-                          className="border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500"
+                          className="border-gray-200 dark:border-gray-600 focus:border-green-500 dark:focus:border-green-500 focus:ring-green-500/20"
                         />
                       </FormControl>
                       <FormMessage />
@@ -480,7 +519,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
                   activeConfig &&
                   form.getValues().aging_threshold !==
                     activeConfig.aging_threshold
-                    ? "ring-2 ring-blue-200 dark:ring-blue-800 rounded-lg p-3"
+                    ? "ring-2 ring-purple-200 dark:ring-purple-800 rounded-lg p-3"
                     : "p-3"
                 }
               >
@@ -490,22 +529,42 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-700 dark:text-gray-300 flex items-center justify-between">
-                        <span>Aging Threshold</span>
+                        <div className="flex items-center">
+                          <span>Ambang Batas Aging</span>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  className="h-4 w-4 p-0 ml-1"
+                                >
+                                  <Info className="h-3 w-3 text-gray-400" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent
+                                side="top"
+                                className="max-w-xs text-xs"
+                              >
+                                <p>{CONFIG_TOOLTIPS.aging_threshold}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
                         {activeConfig &&
                           field.value !== activeConfig.aging_threshold && (
-                            <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300">
-                              Changed
+                            <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-300">
+                              Berubah
                             </Badge>
                           )}
                       </FormLabel>
                       <FormDescription className="text-xs text-gray-500 dark:text-gray-400">
-                        Time before process aging occurs (time units)
+                        Waktu sebelum proses aging terjadi (unit waktu)
                       </FormDescription>
                       <FormControl>
                         <Input
                           type="number"
                           {...field}
-                          className="border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500"
+                          className="border-gray-200 dark:border-gray-600 focus:border-purple-500 dark:focus:border-purple-500 focus:ring-purple-500/20"
                         />
                       </FormControl>
                       <FormMessage />
@@ -519,29 +578,29 @@ const ConfigForm: React.FC<ConfigFormProps> = ({
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.45 }}
-              whileHover={{ scale: isChanged() ? 1.01 : 1 }}
-              whileTap={{ scale: isChanged() ? 0.99 : 1 }}
+              whileHover={{ scale: isChanged() ? 1.02 : 1 }}
+              whileTap={{ scale: isChanged() ? 0.98 : 1 }}
             >
               <Button
                 type="submit"
-                className={`w-full flex gap-2 items-center justify-center transition-all duration-300 ${
+                className={`w-full flex gap-2 items-center justify-center transition-all duration-300 font-medium ${
                   submitted
-                    ? "bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600"
+                    ? "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 dark:from-green-600 dark:to-green-700 shadow-lg"
                     : isChanged()
-                    ? "bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 shadow-md"
+                    ? "bg-gradient-to-r from-purple-500 via-blue-500 to-green-500 hover:from-purple-600 hover:via-blue-600 hover:to-green-600 shadow-lg"
                     : "bg-gray-400 dark:bg-gray-600"
                 } text-white`}
-                disabled={isSimulationRunning || (!isChanged() && !submitted)}
+                disabled={isSimulationRunning}
               >
                 {submitted ? (
                   <>
                     <Check className="h-4 w-4" />
-                    Configuration Applied
+                    Konfigurasi Berhasil Diterapkan
                   </>
                 ) : isChanged() ? (
-                  "Apply Configuration"
+                  "Terapkan Konfigurasi"
                 ) : (
-                  "No Changes to Apply"
+                  "Tidak Ada Perubahan untuk Diterapkan"
                 )}
               </Button>
             </motion.div>
